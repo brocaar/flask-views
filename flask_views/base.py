@@ -11,7 +11,7 @@ class TemplateResponseMixin(object):
     Name of the template to be rendered.
     """
 
-    def render_template(self, **kwargs):
+    def render_to_response(self, **kwargs):
         """
         Render template with the given keyword arguments.
 
