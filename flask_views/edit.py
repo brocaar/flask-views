@@ -56,3 +56,25 @@ class FormMixin(object):
 
         """
         return self.form(**self.get_form_kwargs())
+
+
+class ProcessFormMixin(object):
+    """
+    Mixin for processing form data on GET and POST requests.
+    """
+    def get(self):
+        """
+        Handler for ``GET`` requests.
+        """
+        form = self.get_form()
+        return self.render_to_response(self.get_context_data(form=form))
+
+    def post(self):
+        """
+        Handler for ``POST`` requests.
+        """
+        form = self.get_form()
+        if form.validate():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)

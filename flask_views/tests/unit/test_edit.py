@@ -2,7 +2,7 @@ import unittest
 
 from mock import Mock, patch
 
-from flask_views.edit import FormMixin
+from flask_views.edit import FormMixin, ProcessFormMixin
 
 
 class FormMixinTestCase(unittest.TestCase):
@@ -52,3 +52,55 @@ class FormMixinTestCase(unittest.TestCase):
         self.assertEqual('form-instance', mixin.get_form())
         mixin.get_form_kwargs.assert_called_once_with()
         mixin.form.assert_called_once_with(foo='bar')
+
+
+class ProcessFormMixinTestCase(unittest.TestCase):
+    """
+    Tests for :py:class:`.ProcessFormMixin`.
+    """
+    def test_get(self):
+        """
+        Test :py:meth:`.ProcessFormMixin.get`.
+        """
+        mixin = ProcessFormMixin()
+        mixin.get_form = Mock(return_value='form-instance')
+        mixin.get_context_data = Mock(return_value='context-data')
+        mixin.render_to_response = Mock(return_value='response')
+
+        self.assertEqual('response', mixin.get())
+        mixin.get_context_data.assert_called_once_with(form='form-instance')
+        mixin.render_to_response.assert_called_once_with('context-data')
+
+    def test_post_form_valid(self):
+        """
+        Test :py:meth:`.ProcessFormMixin.post` in case of a valid form.
+        """
+        form_instance = Mock()
+        form_instance.validate.return_value = True
+
+        mixin = ProcessFormMixin()
+        mixin.get_form = Mock(return_value=form_instance)
+        mixin.form_valid = Mock(return_value='valid-form')
+        mixin.form_invalid = Mock(return_value='invalid-form')
+
+        self.assertEqual('valid-form', mixin.post())
+        form_instance.validate.assert_called_once_with()
+        mixin.form_valid.assert_called_once_with(form_instance)
+        self.assertEqual(0, mixin.form_invalid.call_count)
+
+    def test_post_form_invalid(self):
+        """
+        Test :py:meth:`.ProcessFormMixin.post` in case of an invalid form.
+        """
+        form_instance = Mock()
+        form_instance.validate.return_value = False
+
+        mixin = ProcessFormMixin()
+        mixin.get_form = Mock(return_value=form_instance)
+        mixin.form_valid = Mock(return_value='valid-form')
+        mixin.form_invalid = Mock(return_value='invalid-form')
+
+        self.assertEqual('invalid-form', mixin.post())
+        form_instance.validate.assert_called_once_with()
+        mixin.form_invalid.assert_called_once_with(form_instance)
+        self.assertEqual(0, mixin.form_valid.call_count)
