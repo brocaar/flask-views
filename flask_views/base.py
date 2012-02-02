@@ -26,6 +26,12 @@ class TemplateResponseMixin(object):
 class TemplateView(TemplateResponseMixin, View):
     """
     View class for rendering templates.
+
+    This class inherits from:
+
+    * :py:class:`.TemplateResponseMixin`
+    * :py:class:`!flask.views.View`
+
     """
     methods = ['GET']
 

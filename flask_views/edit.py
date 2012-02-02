@@ -1,4 +1,7 @@
 from flask import request
+from flask.views import MethodView
+
+from flask_views.base import TemplateResponseMixin
 
 
 class FormMixin(object):
@@ -78,3 +81,28 @@ class ProcessFormMixin(object):
             return self.form_valid(form)
         else:
             return self.form_invalid(form)
+
+
+class BaseFormView(FormMixin, ProcessFormMixin, MethodView):
+    """
+    Base view for displaying a form.
+
+    This class inherits from:
+
+    * :py:class:`.FormMixin`
+    * :py:class:`.ProcessFormMixin`
+    * :py:class:`!flask.views.MethodView`
+
+    """
+
+
+class FormView(TemplateResponseMixin, BaseFormView):
+    """
+    View for displaying a form and rendering a template.
+
+    This class inherits from:
+
+    * :py:class:`.TemplateResponseMixin`
+    * :py:class:`.BaseFormView`
+
+    """
