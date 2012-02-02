@@ -70,7 +70,7 @@ class ProcessFormMixin(object):
         Handler for ``GET`` requests.
         """
         form = self.get_form()
-        return self.render_to_response(self.get_context_data(form=form))
+        return self.render_to_response(**self.get_context_data(form=form))
 
     def post(self):
         """

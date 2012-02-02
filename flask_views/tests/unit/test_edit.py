@@ -64,12 +64,12 @@ class ProcessFormMixinTestCase(unittest.TestCase):
         """
         mixin = ProcessFormMixin()
         mixin.get_form = Mock(return_value='form-instance')
-        mixin.get_context_data = Mock(return_value='context-data')
+        mixin.get_context_data = Mock(return_value={'context': 'data'})
         mixin.render_to_response = Mock(return_value='response')
 
         self.assertEqual('response', mixin.get())
         mixin.get_context_data.assert_called_once_with(form='form-instance')
-        mixin.render_to_response.assert_called_once_with('context-data')
+        mixin.render_to_response.assert_called_once_with(context='data')
 
     def test_post_form_valid(self):
         """
