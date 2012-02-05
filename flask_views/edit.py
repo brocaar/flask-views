@@ -60,6 +60,21 @@ class FormMixin(object):
         """
         return self.form(**self.get_form_kwargs())
 
+    def form_valid(self, form):
+        """
+        Handle valid form submission.
+
+        Override this function with your own implementation.
+
+        :param form:
+            Instance of the form.
+
+        :raise:
+            :py:exc:`!NotImplementedError`.
+
+        """
+        raise NotImplementedError()
+
     def form_invalid(self, form):
         """
         Handle invalid form submission.

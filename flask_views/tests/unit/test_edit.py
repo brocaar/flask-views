@@ -53,6 +53,13 @@ class FormMixinTestCase(unittest.TestCase):
         mixin.get_form_kwargs.assert_called_once_with()
         mixin.form.assert_called_once_with(foo='bar')
 
+    def test_form_valid(self):
+        """
+        Test :py:meth:`.FormMixin.form_valid`.
+        """
+        mixin = FormMixin()
+        self.assertRaises(NotImplementedError, mixin.form_valid, form=Mock())
+
     def test_form_invalid(self):
         """
         Test :py:meth:`.FormMixin.form_invalid`.
