@@ -53,6 +53,19 @@ class FormMixinTestCase(unittest.TestCase):
         mixin.get_form_kwargs.assert_called_once_with()
         mixin.form.assert_called_once_with(foo='bar')
 
+    def test_form_invalid(self):
+        """
+        Test :py:meth:`.FormMixin.form_invalid`.
+        """
+        mixin = FormMixin()
+        mixin.get_context_data = Mock(return_value={'foo': 'bar'})
+        mixin.render_to_response = Mock(return_value='response')
+
+        form_mock = Mock()
+        self.assertEqual('response', mixin.form_invalid(form=form_mock))
+        mixin.get_context_data.assert_called_once_with(form=form_mock)
+        mixin.render_to_response.assert_called_once_with(foo='bar')
+
 
 class ProcessFormMixinTestCase(unittest.TestCase):
     """

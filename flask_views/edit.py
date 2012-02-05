@@ -60,6 +60,22 @@ class FormMixin(object):
         """
         return self.form(**self.get_form_kwargs())
 
+    def form_invalid(self, form):
+        """
+        Handle invalid form submission.
+
+        This will render the response with the current ``form`` in the context
+        so that the errors can be displayed to the user.
+
+        :param form:
+            Instance of the form class.
+
+        :return:
+            Response containing the ``form`` in the context.
+
+        """
+        return self.render_to_response(**self.get_context_data(form=form))
+
 
 class ProcessFormMixin(object):
     """
