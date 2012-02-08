@@ -1,5 +1,27 @@
 from flask import render_template
-from flask.views import View
+from flask.views import MethodView
+
+
+class View(MethodView):
+    """
+    View which will dispatch requests based on method.
+
+    This class inherits from:
+
+    * :py:class:`!flask.views.MethodView`
+
+    """
+    def dispatch_request(self, *args, **kwargs):
+        """
+        Dispatch the request based on HTTP method.
+
+        This as well sets the arguments and keyword-arguments passed by the
+        URL route dispatcher to ``self.args`` and ``self.kwargs``.
+
+        """
+        self.args = args
+        self.kwargs = kwargs
+        return super(View, self).dispatch_request(*args, **kwargs)
 
 
 class TemplateResponseMixin(object):
@@ -30,11 +52,9 @@ class TemplateView(TemplateResponseMixin, View):
     This class inherits from:
 
     * :py:class:`.TemplateResponseMixin`
-    * :py:class:`!flask.views.View`
+    * :py:class:`.View`
 
     """
-    methods = ['GET']
-
     def get_context_data(self, **kwargs):
         """
         Get context data for rendering template.
@@ -50,7 +70,7 @@ class TemplateView(TemplateResponseMixin, View):
             'params': kwargs,
         }
 
-    def dispatch_request(self, **kwargs):
+    def get(self, *args, **kwargs):
         """
         Render the template on request.
         """

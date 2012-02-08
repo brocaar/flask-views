@@ -1,7 +1,6 @@
 from flask import request
-from flask.views import MethodView
 
-from flask_views.base import TemplateResponseMixin
+from flask_views.base import TemplateResponseMixin, View
 
 
 class FormMixin(object):
@@ -96,14 +95,14 @@ class ProcessFormMixin(object):
     """
     Mixin for processing form data on GET and POST requests.
     """
-    def get(self):
+    def get(self, *args, **kwargs):
         """
         Handler for ``GET`` requests.
         """
         form = self.get_form()
         return self.render_to_response(**self.get_context_data(form=form))
 
-    def post(self):
+    def post(self, *args, **kwargs):
         """
         Handler for ``POST`` requests.
         """
@@ -114,7 +113,7 @@ class ProcessFormMixin(object):
             return self.form_invalid(form)
 
 
-class BaseFormView(FormMixin, ProcessFormMixin, MethodView):
+class BaseFormView(FormMixin, ProcessFormMixin, View):
     """
     Base view for displaying a form.
 
@@ -122,7 +121,7 @@ class BaseFormView(FormMixin, ProcessFormMixin, MethodView):
 
     * :py:class:`.FormMixin`
     * :py:class:`.ProcessFormMixin`
-    * :py:class:`!flask.views.MethodView`
+    * :py:class:`.View`
 
     """
 

@@ -4,6 +4,12 @@ Base views
 Views
 -----
 
+``View``
+~~~~~~~~
+
+.. autoclass:: flask_views.base.View
+    :members:
+
 ``TemplateView``
 ~~~~~~~~~~~~~~~~
 
