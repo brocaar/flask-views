@@ -1,5 +1,7 @@
 from unittest import TestCase
 
+from mock import Mock
+
 from flask_views.db.mongoengine.detail import SingleObjectMixin
 
 
@@ -32,3 +34,12 @@ class SingleObjectMixinTestCase(TestCase):
             mixin = SingleObjectMixin()
             mixin.model = class_obj
             self.assertEqual(expected, mixin.get_context_object_name())
+
+    def test_get_queryset(self):
+        """
+        Test :py:class:`.SingleObjectMixin.get_queryset`.
+        """
+        mixin = SingleObjectMixin()
+        mixin.model = Mock()
+        mixin.model.objects = 'objects-qs'
+        self.assertEqual('objects-qs', mixin.get_queryset())

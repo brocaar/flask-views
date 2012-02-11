@@ -50,3 +50,13 @@ class SingleObjectMixin(object):
             return self.context_object_name
 
         return self.model.__name__.lower()
+
+    def get_queryset(self):
+        """
+        Return ``QuerySet`` class used to retrieve objects.
+
+        :return:
+            An instance of :py:class:`!mongoengine.queryset.QuerySet`.
+
+        """
+        return self.model.objects
