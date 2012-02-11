@@ -5,7 +5,7 @@ from mock import Mock, patch
 from flask_views.base import View, TemplateResponseMixin
 from flask_views.db.mongoengine.detail import SingleObjectMixin
 from flask_views.db.mongoengine.edit import (
-    ModelFormMixin, BaseCreateView, CreateView
+    ModelFormMixin, BaseCreateView, CreateView, BaseUpdateView
 )
 from flask_views.edit import FormMixin, ProcessFormMixin
 
@@ -113,3 +113,40 @@ class CreateViewTestCase(TestCase):
         """
         for class_obj in [TemplateResponseMixin, BaseCreateView]:
             self.assertIn(class_obj, CreateView.mro())
+
+
+class BaseUpdateViewTestCase(TestCase):
+    """
+    Tests for :py:class:`.BaseUpdateView`.
+    """
+    @patch('flask_views.db.mongoengine.edit.super', create=True)
+    def test_get(self, super_mock):
+        """
+        Test :py:meth:`.BaseUpdateView.get`.
+        """
+        super_class = Mock()
+        super_class.get.return_value = 'get-response'
+        super_mock.return_value = super_class
+
+        view = BaseUpdateView()
+        view.get_object = Mock(return_value='object')
+
+        self.assertEqual('get-response', view.get('someting', foo='bar'))
+        self.assertEqual('object', view.object)
+        super_class.get.assert_called_once_with('someting', foo='bar')
+
+    @patch('flask_views.db.mongoengine.edit.super', create=True)
+    def test_post(self, super_mock):
+        """
+        Test :py:meth:`.BaseUpdateView.post`.
+        """
+        super_class = Mock()
+        super_class.post.return_value = 'post-response'
+        super_mock.return_value = super_class
+
+        view = BaseUpdateView()
+        view.get_object = Mock(return_value='object')
+
+        self.assertEqual('post-response', view.post('something', foo='bar'))
+        self.assertEqual('object', view.object)
+        super_class.post.assert_called_once_with('something', foo='bar')

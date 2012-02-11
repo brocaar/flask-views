@@ -70,3 +70,22 @@ class CreateView(TemplateResponseMixin, BaseCreateView):
     * :py:class:`.BaseCreateView`
 
     """
+
+
+class BaseUpdateView(ModelFormMixin, ProcessFormMixin):
+    """
+    Base view for updating objects.
+    """
+    def get(self, *args, **kwargs):
+        """
+        Handler for GET requests.
+        """
+        self.object = self.get_object()
+        return super(BaseUpdateView, self).get(*args, **kwargs)
+
+    def post(self, *args, **kwargs):
+        """
+        Handler for POST requests.
+        """
+        self.object = self.get_object()
+        return super(BaseUpdateView, self).post(*args, **kwargs)
