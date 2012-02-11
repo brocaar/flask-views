@@ -6,3 +6,5 @@ Unit
     :glob:
 
     *
+
+    db/index

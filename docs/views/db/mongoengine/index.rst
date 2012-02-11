@@ -1,10 +1,8 @@
-Views
-=====
+Mongoengine
+===========
 
 .. toctree::
     :maxdepth: 2
     :glob:
 
     *
-
-    db/index

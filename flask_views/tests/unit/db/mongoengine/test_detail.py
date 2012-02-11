@@ -67,7 +67,7 @@ class SingleObjectMixinTestCase(TestCase):
 
     def test_get_object_multi_field(self):
         """
-        Test py:meth:`.SingleObjectMixin.get_object` on multiple fields.
+        Test :py:meth:`.SingleObjectMixin.get_object` on multiple fields.
         """
         queryset = Mock()
         queryset.get.return_value = 'object'

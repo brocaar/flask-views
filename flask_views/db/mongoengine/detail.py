@@ -101,6 +101,12 @@ class SingleObjectMixin(object):
 class BaseDetailView(SingleObjectMixin, View):
     """
     Base detail view.
+
+    Extends from:
+
+    * :py:class:`.SingleObjectMixin`
+    * :py:class:`.View`
+
     """
     def get(self, *args, **kwargs):
         """
