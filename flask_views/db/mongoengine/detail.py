@@ -1,3 +1,4 @@
+from flask import abort
 
 
 class SingleObjectMixin(object):
@@ -60,3 +61,25 @@ class SingleObjectMixin(object):
 
         """
         return self.model.objects
+
+    def get_object(self):
+        """
+        Retrieve the object from the database.
+
+        :return:
+            An instance of the model class containing the retrieved object.
+
+        :raise:
+            :py:exc:`!werkzeug.exceptions.NotFound` when the document does not
+            exist.
+
+        """
+        lookup_args = {}
+
+        for field_name, mapping_name in self.get_fields.items():
+            lookup_args[field_name] = self.kwargs.get(mapping_name, None)
+
+        try:
+            return self.get_queryset().get(**lookup_args)
+        except self.model.DoesNotExist:
+            abort(404)
