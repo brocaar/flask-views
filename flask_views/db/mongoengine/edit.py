@@ -75,6 +75,12 @@ class CreateView(TemplateResponseMixin, BaseCreateView):
 class BaseUpdateView(ModelFormMixin, ProcessFormMixin):
     """
     Base view for updating objects.
+
+    This class inherits from:
+
+    * :py:class:`.ModelFormMixin`
+    * :py:class:`.ProcessFormMixin`
+
     """
     def get(self, *args, **kwargs):
         """
@@ -89,3 +95,15 @@ class BaseUpdateView(ModelFormMixin, ProcessFormMixin):
         """
         self.object = self.get_object()
         return super(BaseUpdateView, self).post(*args, **kwargs)
+
+
+class UpdateView(TemplateResponseMixin, BaseUpdateView):
+    """
+    View for updating objects.
+
+    This class inherits from:
+
+    * :py:class:`.TemplateResponseMixin`
+    * :py:class:`.BaseUpdateView`
+
+    """

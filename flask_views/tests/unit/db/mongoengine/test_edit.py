@@ -5,7 +5,7 @@ from mock import Mock, patch
 from flask_views.base import View, TemplateResponseMixin
 from flask_views.db.mongoengine.detail import SingleObjectMixin
 from flask_views.db.mongoengine.edit import (
-    ModelFormMixin, BaseCreateView, CreateView, BaseUpdateView
+    ModelFormMixin, BaseCreateView, CreateView, BaseUpdateView, UpdateView
 )
 from flask_views.edit import FormMixin, ProcessFormMixin
 
@@ -150,3 +150,12 @@ class BaseUpdateViewTestCase(TestCase):
         self.assertEqual('post-response', view.post('something', foo='bar'))
         self.assertEqual('object', view.object)
         super_class.post.assert_called_once_with('something', foo='bar')
+
+
+class UpdateViewTestCase(TestCase):
+    """
+    Tests for :py:class:`.UpdateView`.
+    """
+    def test_inherited_classes(self):
+        for class_obj in [TemplateResponseMixin, BaseUpdateView]:
+            self.assertIn(class_obj, UpdateView.mro())
