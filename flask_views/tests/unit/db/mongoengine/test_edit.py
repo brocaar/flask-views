@@ -48,15 +48,13 @@ class ModelFormMixinTestCase(TestCase):
         super_class.form_valid.return_value = 'form-valid'
         super_mock.return_value = super_class
 
-        model_instance = Mock()
         form = Mock()
-
         mixin = ModelFormMixin()
-        mixin.model = Mock(return_value=model_instance)
+        mixin.object = Mock()
 
         self.assertEqual('form-valid', mixin.form_valid(form))
-        form.populate_obj.assert_called_once_with(model_instance)
-        model_instance.save.assert_called_once_with()
+        form.populate_obj.assert_called_once_with(mixin.object)
+        mixin.object.save.assert_called_once_with()
         super_mock.assert_called_once_with(ModelFormMixin, mixin)
         super_class.form_valid.assert_called_once_with(form)
 
@@ -98,10 +96,10 @@ class BaseCreateViewTestCase(TestCase):
         super_mock.return_value = super_class
 
         view = BaseCreateView()
-        view.object = 'foo'
+        view.model = Mock(return_value='model-instance')
 
         self.assertEqual('post-response', view.post('something', foo='bar'))
-        self.assertEqual(None, view.object)
+        self.assertEqual('model-instance', view.object)
         super_class.post.assert_called_once_with('something', foo='bar')
 
 
