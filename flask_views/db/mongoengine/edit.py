@@ -1,4 +1,4 @@
-from flask_views.base import View
+from flask_views.base import TemplateResponseMixin, View
 from flask_views.db.mongoengine.detail import SingleObjectMixin
 from flask_views.edit import FormMixin, ProcessFormMixin
 
@@ -37,7 +37,7 @@ class ModelFormMixin(FormMixin, SingleObjectMixin):
 
 class BaseCreateView(ModelFormMixin, ProcessFormMixin, View):
     """
-    Base view for create forms.
+    Base view for creating objects.
 
     This class inherits from:
 
@@ -59,3 +59,15 @@ class BaseCreateView(ModelFormMixin, ProcessFormMixin, View):
         """
         self.object = None
         return super(BaseCreateView, self).post(*args, **kwargs)
+
+
+class CreateView(TemplateResponseMixin, BaseCreateView):
+    """
+    View for creating objects.
+
+    This class inherits from:
+
+    * :py:class:`.TemplateResponseMixin`
+    * :py:class:`.BaseCreateView`
+
+    """

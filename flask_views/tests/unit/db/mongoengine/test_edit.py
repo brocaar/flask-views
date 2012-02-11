@@ -2,9 +2,11 @@ from unittest import TestCase
 
 from mock import Mock, patch
 
-from flask_views.base import View
+from flask_views.base import View, TemplateResponseMixin
 from flask_views.db.mongoengine.detail import SingleObjectMixin
-from flask_views.db.mongoengine.edit import ModelFormMixin, BaseCreateView
+from flask_views.db.mongoengine.edit import (
+    ModelFormMixin, BaseCreateView, CreateView
+)
 from flask_views.edit import FormMixin, ProcessFormMixin
 
 
@@ -101,3 +103,15 @@ class BaseCreateViewTestCase(TestCase):
         self.assertEqual('post-response', view.post('something', foo='bar'))
         self.assertEqual(None, view.object)
         super_class.post.assert_called_once_with('something', foo='bar')
+
+
+class CreateViewTestCase(TestCase):
+    """
+    Tests for :py:class:`.CreateView`.
+    """
+    def test_inherited_classes(self):
+        """
+        Test that this class inherits from the right classes.
+        """
+        for class_obj in [TemplateResponseMixin, BaseCreateView]:
+            self.assertIn(class_obj, CreateView.mro())
