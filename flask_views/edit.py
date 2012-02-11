@@ -1,4 +1,4 @@
-from flask import request
+from flask import request, redirect
 
 from flask_views.base import TemplateResponseMixin, View
 
@@ -17,6 +17,11 @@ class FormMixin(object):
     Initial data when creating form instance.
     """
 
+    success_url = None
+    """
+    URL for redirecting after a successful form submission.
+    """
+
     def get_initial(self):
         """
         Return initial form data.
@@ -26,6 +31,16 @@ class FormMixin(object):
 
         """
         return self.initial
+
+    def get_success_url(self):
+        """
+        Return success URL.
+
+        :return:
+            :py:data:`flask_views.edit.FormMixin.success_url`.
+
+        """
+        return self.success_url
 
     def get_context_data(self, **kwargs):
         """
@@ -68,11 +83,12 @@ class FormMixin(object):
         :param form:
             Instance of the form.
 
-        :raise:
-            :py:exc:`!NotImplementedError`.
+        :return:
+            Redirect to URL specified in
+            :py:attr:`flask_views.edit.FormMixin.success_url`.
 
         """
-        raise NotImplementedError()
+        return redirect(self.get_success_url())
 
     def form_invalid(self, form):
         """

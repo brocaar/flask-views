@@ -18,6 +18,15 @@ class FormMixinTestCase(unittest.TestCase):
 
         self.assertEqual({'foo': 'bar'}, mixin.get_initial())
 
+    def test_get_success_url(self):
+        """
+        Test :py:meth:`.FormMixin.get_success_url`.
+        """
+        mixin = FormMixin()
+        mixin.success_url = 'foo/bar'
+
+        self.assertEqual('foo/bar', mixin.get_success_url())
+
     def test_get_context_data(self):
         """
         Test :py:meth:`.FormMixin.get_context_data`.
@@ -53,12 +62,18 @@ class FormMixinTestCase(unittest.TestCase):
         mixin.get_form_kwargs.assert_called_once_with()
         mixin.form.assert_called_once_with(foo='bar')
 
-    def test_form_valid(self):
+    @patch('flask_views.edit.redirect')
+    def test_form_valid(self, redirect):
         """
         Test :py:meth:`.FormMixin.form_valid`.
         """
+        redirect.return_value = 'redirect'
+
         mixin = FormMixin()
-        self.assertRaises(NotImplementedError, mixin.form_valid, form=Mock())
+        mixin.get_success_url = Mock(return_value='foo/bar')
+
+        self.assertEqual('redirect', mixin.form_valid(Mock()))
+        redirect.assert_called_once_with('foo/bar')
 
     def test_form_invalid(self):
         """
