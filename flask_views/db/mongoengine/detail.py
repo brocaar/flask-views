@@ -1,6 +1,6 @@
 from flask import abort
 
-from flask_views.base import View
+from flask_views.base import View, TemplateResponseMixin
 
 
 class SingleObjectMixin(object):
@@ -102,7 +102,7 @@ class BaseDetailView(SingleObjectMixin, View):
     """
     Base detail view.
 
-    Extends from:
+    This class inherits from:
 
     * :py:class:`.SingleObjectMixin`
     * :py:class:`.View`
@@ -114,3 +114,15 @@ class BaseDetailView(SingleObjectMixin, View):
         """
         self.object = self.get_object()
         return self.render_to_response(**self.get_context_data())
+
+
+class DetailView(TemplateResponseMixin, BaseDetailView):
+    """
+    Detail view for rendering an object.
+
+    This class inherits from:
+
+    * :py:class:`.TemplateResponseMixin`
+    * :py:class:`.BaseDetailView`
+
+    """

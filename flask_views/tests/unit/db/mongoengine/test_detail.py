@@ -2,8 +2,10 @@ from unittest import TestCase
 
 from mock import Mock
 
-from flask_views.base import View
-from flask_views.db.mongoengine.detail import SingleObjectMixin, BaseDetailView
+from flask_views.base import View, TemplateResponseMixin
+from flask_views.db.mongoengine.detail import (
+    SingleObjectMixin, BaseDetailView, DetailView
+)
 
 
 class SingleObjectMixinTestCase(TestCase):
@@ -122,7 +124,7 @@ class BaseDetailViewTestCase(TestCase):
     """
     Tests for :py:class:`.BaseDetailView`.
     """
-    def test_extended_classes(self):
+    def test_inherited_classes(self):
         """
         Test that it extends :class:`.SingleObjectMixin` and :class:`.View`.
         """
@@ -140,3 +142,17 @@ class BaseDetailViewTestCase(TestCase):
         self.assertEqual('response', view.get())
         self.assertEqual('object', view.object)
         view.render_to_response.assert_called_once_with(foo='bar')
+
+
+class DetailViewTestCase(TestCase):
+    """
+    Tests for :py:class:`.DetailView`.
+    """
+    def test_inherited_classes(self):
+        """
+        Test that it inherits from the right classes.
+        """
+        self.assertEqual(
+            [TemplateResponseMixin, BaseDetailView],
+            DetailView.mro()[1:3],
+        )

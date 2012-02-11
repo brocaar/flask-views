@@ -7,6 +7,9 @@ Views
 .. autoclass:: flask_views.db.mongoengine.detail.BaseDetailView
     :members:
 
+.. autoclass:: flask_views.db.mongoengine.detail.DetailView
+    :members:
+
 
 Mixins
 ------
