@@ -72,7 +72,7 @@ class CreateView(TemplateResponseMixin, BaseCreateView):
     """
 
 
-class BaseUpdateView(ModelFormMixin, ProcessFormMixin):
+class BaseUpdateView(ModelFormMixin, ProcessFormMixin, View):
     """
     Base view for updating objects.
 
