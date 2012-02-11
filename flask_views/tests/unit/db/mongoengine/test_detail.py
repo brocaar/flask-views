@@ -2,7 +2,8 @@ from unittest import TestCase
 
 from mock import Mock
 
-from flask_views.db.mongoengine.detail import SingleObjectMixin
+from flask_views.base import View
+from flask_views.db.mongoengine.detail import SingleObjectMixin, BaseDetailView
 
 
 class SingleObjectMixinTestCase(TestCase):
@@ -103,3 +104,39 @@ class SingleObjectMixinTestCase(TestCase):
         }
 
         self.assertRaises(mixin.model.DoesNotExist, mixin.get_object)
+
+    def test_get_context_data(self):
+        """
+        Test :py:meth:`.SingleObjectMixin.get_context_data`.
+        """
+        mixin = SingleObjectMixin()
+        mixin.object = Mock()
+        mixin.get_context_object_name = Mock(return_value='obj_name')
+        self.assertEqual({
+            'foo': 'bar',
+            'obj_name': mixin.object,
+        }, mixin.get_context_data(foo='bar'))
+
+
+class BaseDetailViewTestCase(TestCase):
+    """
+    Tests for :py:class:`.BaseDetailView`.
+    """
+    def test_extended_classes(self):
+        """
+        Test that it extends :class:`.SingleObjectMixin` and :class:`.View`.
+        """
+        self.assertEqual([SingleObjectMixin, View], BaseDetailView.mro()[1:3])
+
+    def test_get(self):
+        """
+        Test :py:meth:`.BaseDetailView.get`.
+        """
+        view = BaseDetailView()
+        view.get_object = Mock(return_value='object')
+        view.get_context_data = Mock(return_value={'foo': 'bar'})
+        view.render_to_response = Mock(return_value='response')
+
+        self.assertEqual('response', view.get())
+        self.assertEqual('object', view.object)
+        view.render_to_response.assert_called_once_with(foo='bar')

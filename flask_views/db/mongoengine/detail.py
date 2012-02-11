@@ -1,5 +1,7 @@
 from flask import abort
 
+from flask_views.base import View
+
 
 class SingleObjectMixin(object):
     """
@@ -83,3 +85,26 @@ class SingleObjectMixin(object):
             return self.get_queryset().get(**lookup_args)
         except self.model.DoesNotExist:
             abort(404)
+
+    def get_context_data(self, **kwargs):
+        """
+        Return context data containing the retrieved object.
+
+        :return:
+            A ``dict`` containing the retrieved object.
+
+        """
+        kwargs[self.get_context_object_name()] = self.object
+        return kwargs
+
+
+class BaseDetailView(SingleObjectMixin, View):
+    """
+    Base detail view.
+    """
+    def get(self, *args, **kwargs):
+        """
+        Handler for GET requests.
+        """
+        self.object = self.get_object()
+        return self.render_to_response(**self.get_context_data())
