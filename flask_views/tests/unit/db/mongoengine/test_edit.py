@@ -58,6 +58,24 @@ class ModelFormMixinTestCase(TestCase):
         super_mock.assert_called_once_with(ModelFormMixin, mixin)
         super_class.form_valid.assert_called_once_with(form)
 
+    @patch('flask_views.db.mongoengine.edit.super', create=True)
+    def test_get_context_data(self, super_mock):
+        """
+        Test :py:meth:`.ModelFormMixin.get_context_data`.
+        """
+        super_class = Mock()
+        super_class.get_context_data.return_value = {'foo': 'bar'}
+        super_mock.return_value = super_class
+
+        mixin = ModelFormMixin()
+        mixin.object = Mock()
+
+        self.assertEqual({
+            'foo': 'bar',
+            'object': mixin.object,
+        }, mixin.get_context_data(foo='bar'))
+        super_class.get_context_data.assert_called_once_with(foo='bar')
+
 
 class BaseCreateViewTestCase(TestCase):
     """

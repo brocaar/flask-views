@@ -33,6 +33,22 @@ class ModelFormMixin(FormMixin, SingleObjectMixin):
         self.object.save()
         return super(ModelFormMixin, self).form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        """
+        Return context data for rendering template.
+
+        This adds ``self.object`` as ``object`` to the context data.
+
+        :return:
+            A ``dict`` containing the context data.
+
+        """
+        context = super(ModelFormMixin, self).get_context_data(**kwargs)
+        context.update({
+            'object': self.object,
+        })
+        return context
+
 
 class BaseCreateView(ModelFormMixin, ProcessFormMixin, View):
     """
