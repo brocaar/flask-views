@@ -9,7 +9,7 @@ class FormMixin(object):
     """
     form_class = None
     """
-    The form class.
+    Set this to the form class you want to use.
     """
 
     initial = {}
@@ -139,16 +139,38 @@ class BaseFormView(FormMixin, ProcessFormMixin, View):
     * :py:class:`.ProcessFormMixin`
     * :py:class:`.View`
 
+    This class implements all logic for processing forms, but does not include
+    rendering responses. See :py:class:`.FormView` for an usage example.
+
     """
 
 
 class FormView(TemplateResponseMixin, BaseFormView):
     """
-    View for displaying a form and rendering a template.
+    View for displaying a form, including rendering of template.
 
     This class inherits from:
 
     * :py:class:`.TemplateResponseMixin`
     * :py:class:`.BaseFormView`
+
+    This class implements all logic for displaying and processing form
+    submissions, including rendering of templates.
+
+    Usage example::
+
+        class ContactFormView(FormView):
+            form_class = ContactForm
+            template_name = 'contact_form.html'
+
+            def form_valid(self, form):
+                # Do something with the submitted form data
+                return super(ContactFormView, self).form_valid(form)
+
+            def get_success_url(self):
+                return url_for('contact.form')
+
+    An instance of the form class will be available in the template context
+    under the ``form`` variable.
 
     """
