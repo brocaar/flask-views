@@ -1,20 +1,35 @@
-Welcome to Flask-Views's documentation!
-=======================================
+Table of content
+================
 
-Contents:
+*Flask-Views* is a Flask extension which provides a set of class based views,
+inspired by Django.
+
+Features:
+
+* Base views for rendering templates and responses based on HTTP request method
+* Edit views for handling form submission (without database backend)
+* Database views
+    A set of views with database integration. Currently, only MongoDB (by
+    using the Mongoengine module) is implemented.
+
+    * Detail views for rendering a single item on a page
+    * Edit views for creating and updating items
+
+
+Overview
+--------
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 5
+   :glob:
 
-   views/index
-   tests/index
+   views/*
+   views/db/index
 
+Internals
+---------
 
+.. toctree::
+    :maxdepth: 2
 
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
-
+    tests/index

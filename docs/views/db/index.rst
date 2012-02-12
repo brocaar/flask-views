@@ -2,6 +2,6 @@ Database views
 ==============
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 4
 
     mongoengine/index
