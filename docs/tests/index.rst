@@ -2,6 +2,6 @@ Tests
 =====
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 6
 
     unit/index

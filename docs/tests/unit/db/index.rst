@@ -2,7 +2,7 @@ flask_views.db
 ==============
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 4
     :glob:
 
     mongoengine/index
