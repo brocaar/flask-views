@@ -40,9 +40,9 @@ class ModelFormMixinTestCase(TestCase):
         super_mock.assert_called_once_with(ModelFormMixin, mixin)
 
     @patch('flask_views.db.mongoengine.edit.super', create=True)
-    def test_form_valid(self, super_mock):
+    def test_form_valid_with_object(self, super_mock):
         """
-        Test :py:meth:`.ModelFormMixin.form_valid`.
+        Test :py:meth:`.ModelFormMixin.form_valid` with ``self.object`` set.
         """
         super_class = Mock()
         super_class.form_valid.return_value = 'form-valid'
@@ -54,6 +54,27 @@ class ModelFormMixinTestCase(TestCase):
 
         self.assertEqual('form-valid', mixin.form_valid(form))
         form.populate_obj.assert_called_once_with(mixin.object)
+        mixin.object.save.assert_called_once_with()
+        super_mock.assert_called_once_with(ModelFormMixin, mixin)
+        super_class.form_valid.assert_called_once_with(form)
+
+    @patch('flask_views.db.mongoengine.edit.super', create=True)
+    def test_form_valid_without_object(self, super_mock):
+        """
+        Test :py:meth:`.ModelFormMixin.form_valid` without ``self.object`` set.
+        """
+        super_class = Mock()
+        super_class.form_valid.return_value = 'form-valid'
+        super_mock.return_value = super_class
+
+        form = Mock()
+        model_obj = Mock()
+        mixin = ModelFormMixin()
+        mixin.object = None
+        mixin.model = Mock(return_value=model_obj)
+
+        self.assertEqual('form-valid', mixin.form_valid(form))
+        form.populate_obj.assert_called_once_with(model_obj)
         mixin.object.save.assert_called_once_with()
         super_mock.assert_called_once_with(ModelFormMixin, mixin)
         super_class.form_valid.assert_called_once_with(form)
@@ -114,10 +135,10 @@ class BaseCreateViewTestCase(TestCase):
         super_mock.return_value = super_class
 
         view = BaseCreateView()
-        view.model = Mock(return_value='model-instance')
+        view.object = 'foo'
 
         self.assertEqual('post-response', view.post('something', foo='bar'))
-        self.assertEqual('model-instance', view.object)
+        self.assertEqual(None, view.object)
         super_class.post.assert_called_once_with('something', foo='bar')
 
 

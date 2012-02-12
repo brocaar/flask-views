@@ -29,6 +29,8 @@ class ModelFormMixin(FormMixin, SingleObjectMixin):
         """
         Handle a valid form submission.
         """
+        if not self.object:
+            self.object = self.model()
         form.populate_obj(self.object)
         self.object.save()
         return super(ModelFormMixin, self).form_valid(form)
@@ -72,7 +74,7 @@ class BaseCreateView(ModelFormMixin, ProcessFormMixin, View):
         """
         Handler for POST requests.
         """
-        self.object = self.model()
+        self.object = None
         return super(BaseCreateView, self).post(*args, **kwargs)
 
 
