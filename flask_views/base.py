@@ -4,19 +4,30 @@ from flask.views import MethodView
 
 class View(MethodView):
     """
-    View which will dispatch requests based on method.
+    View which will dispatch requests based on request method.
 
     This class inherits from:
 
     * :py:class:`!flask.views.MethodView`
+
+    Example usage::
+
+        class MethodView(View):
+
+            def get(self, *args, **kwargs):
+                return 'Hello {0}'.format(self.kwargs.get('user'))
+
+    When you have a URL route ``'/<user>/'`` and you request, ``/john/``, it
+    will return ``'Hello john'``.
 
     """
     def dispatch_request(self, *args, **kwargs):
         """
         Dispatch the request based on HTTP method.
 
-        This as well sets the arguments and keyword-arguments passed by the
-        URL route dispatcher to ``self.args`` and ``self.kwargs``.
+        This sets the arguments and keyword-arguments passed by the
+        URL route dispatcher to ``self.args`` and ``self.kwargs``, then it will
+        dispatch the request to the right method.
 
         """
         self.args = args
@@ -31,7 +42,7 @@ class TemplateResponseMixin(object):
 
     template_name = None
     """
-    Name of the template to be rendered.
+    Set this variable to the template you want to render.
     """
 
     def render_to_response(self, **kwargs):
@@ -54,10 +65,15 @@ class TemplateView(TemplateResponseMixin, View):
     * :py:class:`.TemplateResponseMixin`
     * :py:class:`.View`
 
+    Example usage::
+
+        class IndexTemplateView(TemplateView):
+            template_name = 'index.html'
+
     """
     def get_context_data(self, **kwargs):
         """
-        Get context data for rendering template.
+        Get context data for rendering the template.
 
         :return:
             A ``dict`` containing the following keys:
@@ -73,5 +89,12 @@ class TemplateView(TemplateResponseMixin, View):
     def get(self, *args, **kwargs):
         """
         Render the template on request.
+
+        The keyword-arguments passed by the URL dispatcher are added
+        to the context data.
+
+        :return:
+            Output of :py:meth:`.TemplateResponseMixin.render_to_response`.
+
         """
         return self.render_to_response(**self.get_context_data(**kwargs))
