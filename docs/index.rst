@@ -1,5 +1,5 @@
-Table of content
-================
+Flask-Views
+===========
 
 *Flask-Views* is a Flask extension which provides a set of class based views,
 inspired by Django.
@@ -16,8 +16,8 @@ Features:
     * Edit views for creating and updating items
 
 
-Overview
---------
+Views
+-----
 
 .. toctree::
    :maxdepth: 5
