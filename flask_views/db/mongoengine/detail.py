@@ -10,6 +10,9 @@ class SingleObjectMixin(object):
     model = None
     """
     Document model class from which the object should be retrieved.
+
+    .. seealso:: http://mongoengine.org/
+
     """
 
     get_fields = {
@@ -33,8 +36,8 @@ class SingleObjectMixin(object):
     context_object_name = None
     """
     The variable name to give this object in the template context. If ``None``,
-    it will get the name of the model class (Eg: a class ``Page`` would get
-    stored as ``page``).
+    it will get the name of the model class (Eg: a class ``Page`` would be
+    available as ``page``).
 
     """
     def get_context_object_name(self):
@@ -107,10 +110,22 @@ class BaseDetailView(SingleObjectMixin, View):
     * :py:class:`.SingleObjectMixin`
     * :py:class:`.View`
 
+    This class implements all logic for retrieving a single object from the
+    database, but does not implement rendering responses. See
+    :py:class:`.DetailView` for an usage example.
+
     """
     def get(self, *args, **kwargs):
         """
         Handler for GET requests.
+
+        This retrieves the object from the database and calls the
+        ``render_to_response`` with the retrieved object in the context
+        data.
+
+        :return:
+            Ouput of ``render_to_response`` method implementation.
+
         """
         self.object = self.get_object()
         return self.render_to_response(**self.get_context_data())
@@ -124,5 +139,18 @@ class DetailView(TemplateResponseMixin, BaseDetailView):
 
     * :py:class:`.TemplateResponseMixin`
     * :py:class:`.BaseDetailView`
+
+    This class implements all logic for retrieving a single object from the
+    database, including rendering a template.
+
+    Usage example::
+
+        class ArticleView(DetailView):
+            get_fields = {
+                'category': 'category',
+                'slug': 'slug',
+            }
+            model = Article
+            template_name = 'article_detail.html'
 
     """
