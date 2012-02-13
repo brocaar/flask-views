@@ -2,7 +2,7 @@ Flask-Views
 ===========
 
 *Flask-Views* is a Flask extension which provides a set of class based views,
-inspired by Django.
+based on the Django class based views.
 
 Features:
 
@@ -26,10 +26,10 @@ Views
    views/*
    views/db/index
 
-Internals
----------
+Additional
+----------
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
 
-    tests/index
+    changes
