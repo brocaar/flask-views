@@ -12,24 +12,5 @@ Features:
     A set of views with database integration. Currently, only MongoDB (by
     using the Mongoengine module) is implemented.
 
-    * Detail views for rendering a single item within a template
+    * Detail views for rendering a single within a template
     * Edit views for creating and updating items
-
-
-Views
------
-
-.. toctree::
-   :maxdepth: 5
-   :glob:
-
-   views/*
-   views/db/index
-
-Additional
-----------
-
-.. toctree::
-    :maxdepth: 2
-
-    changes

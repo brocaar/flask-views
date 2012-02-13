@@ -3,6 +3,7 @@ syntax: glob
 .*
 *.pyc
 
+dist
 docs/_build
 htmlcov
 
