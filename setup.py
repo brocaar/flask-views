@@ -15,7 +15,12 @@ setup(
         'flask_views.db',
         'flask_views.db.mongoengine',
     ],
+    install_requires=[
+        'Flask',
+    ],
+    test_suite='flask_views.tests.suite',
     classifiers=[
+        'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
