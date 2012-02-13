@@ -9,17 +9,27 @@ class FormMixin(object):
     """
     form_class = None
     """
-    Set this to the form class you want to use.
+    Set this to the form class (WTForms) you want to use.
+
+    .. seealso:: http://wtforms.simplecodes.com/
+
     """
 
     initial = {}
     """
-    Initial data when creating form instance.
+    Set this to the initial data for form fields. Example::
+
+        initial = {
+            'title': 'Initial title value',
+            'body': 'Initial body value.',
+        }
+
     """
 
     success_url = None
     """
-    URL for redirecting after a successful form submission.
+    Set this to the URL the user should be redirected to after a successful
+    form submittion.
     """
 
     def get_initial(self):
@@ -78,14 +88,16 @@ class FormMixin(object):
         """
         Handle valid form submission.
 
-        Override this function with your own implementation.
+        This redirects the user to the URL returned by
+        :py:meth:`flask_views.edit.FormMixin.get_success_url`. You want to
+        override this method for processing the submitted form data.
 
         :param form:
             Instance of the form.
 
         :return:
-            Redirect to URL specified in
-            :py:attr:`flask_views.edit.FormMixin.success_url`.
+            Redirect to URL returned by
+            :py:meth:`flask_views.edit.FormMixin.get_success_url`.
 
         """
         return redirect(self.get_success_url())
@@ -114,6 +126,13 @@ class ProcessFormMixin(object):
     def get(self, *args, **kwargs):
         """
         Handler for ``GET`` requests.
+
+        This will call ``render_to_response`` with an instance of the form
+        as ``form`` in the context data.
+
+        :return:
+            Output of ``render_to_response`` method implementation.
+
         """
         form = self.get_form()
         return self.render_to_response(**self.get_context_data(form=form))
@@ -121,6 +140,13 @@ class ProcessFormMixin(object):
     def post(self, *args, **kwargs):
         """
         Handler for ``POST`` requests.
+
+        On a valid form submission, this will dispatch the request to
+        the ``form_valid`` method, else it is dispatched to ``form_invalid``.
+
+        :return:
+            Output of ``form_valid`` or ``form_invalid``.
+
         """
         form = self.get_form()
         if form.validate():
