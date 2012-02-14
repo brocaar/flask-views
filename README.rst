@@ -14,3 +14,5 @@ Features:
 
     * Detail views for rendering a single within a template
     * Edit views for creating and updating items
+
+.. seealso:: http://packages.python.org/Flask-Views/
