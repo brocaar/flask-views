@@ -1,7 +1,7 @@
 Flask-Views
 ===========
 
-*Flask-Views* is a Flask extension which provides a set of class based views,
+*Flask-Views* is a Flask extension which provides a set of class-based views,
 based on the Django class based views.
 
 Features:

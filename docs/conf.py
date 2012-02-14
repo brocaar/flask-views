@@ -43,7 +43,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Flask-Views'
-copyright = u'2012, Orne Brocaar'
+copyright = u'2012, <a href="http://brocaar.com/">Orne Brocaar</a>'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
