@@ -55,12 +55,12 @@ class FormMixinTestCase(unittest.TestCase):
         Test :py:meth:`.FormMixin.get_form`.
         """
         mixin = FormMixin()
-        mixin.form = Mock(return_value='form-instance')
+        mixin.form_class = Mock(return_value='form-instance')
         mixin.get_form_kwargs = Mock(return_value={'foo': 'bar'})
 
         self.assertEqual('form-instance', mixin.get_form())
         mixin.get_form_kwargs.assert_called_once_with()
-        mixin.form.assert_called_once_with(foo='bar')
+        mixin.form_class.assert_called_once_with(foo='bar')
 
     @patch('flask_views.edit.redirect')
     def test_form_valid(self, redirect):

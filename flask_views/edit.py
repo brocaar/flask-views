@@ -82,7 +82,7 @@ class FormMixin(object):
             Instance :py:class:`flask_views.edit.FormMixin.form_class`.
 
         """
-        return self.form(**self.get_form_kwargs())
+        return self.form_class(**self.get_form_kwargs())
 
     def form_valid(self, form):
         """
@@ -123,6 +123,8 @@ class ProcessFormMixin(object):
     """
     Mixin for processing form data on GET and POST requests.
     """
+    methods = ['GET', 'POST']
+
     def get(self, *args, **kwargs):
         """
         Handler for ``GET`` requests.

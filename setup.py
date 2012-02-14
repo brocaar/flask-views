@@ -20,6 +20,7 @@ setup(
     ],
     tests_require=[
         'mock',
+        'wtforms',
     ],
     test_suite='flask_views.tests.suite',
     classifiers=[
