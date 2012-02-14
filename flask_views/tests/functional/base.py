@@ -9,4 +9,5 @@ class BaseTestCase(TestCase):
     """
     def setUp(self):
         self.app = Flask(__name__)
+        self.app.debug = True
         self.client = self.app.test_client()

@@ -1,6 +1,6 @@
 from flask import url_for
 
-from flask_views.base import View
+from flask_views.base import View, TemplateView
 from flask_views.tests.functional.base import BaseTestCase
 
 
@@ -40,3 +40,28 @@ class ViewTestCase(BaseTestCase):
             response = self.client.post(url_for('test', user='bar'))
         self.assertEqual(200, response.status_code)
         self.assertEqual('POST: bar', response.data)
+
+
+class TemplateViewTestCase(BaseTestCase):
+    """
+    Tests for :py:class:`.TemplateView`.
+    """
+    def setUp(self):
+        super(TemplateViewTestCase, self).setUp()
+
+        class TestView(TemplateView):
+            template_name = 'template_view.html'
+
+        self.app.add_url_rule(
+            '/test/<user>/',
+            view_func=TestView.as_view('test'),
+        )
+
+    def test_get(self):
+        """
+        Test GET request.
+        """
+        with self.app.test_request_context():
+            response = self.client.get(url_for('test', user='foo'))
+        self.assertEqual(200, response.status_code)
+        self.assertEqual('User: foo', response.data)
