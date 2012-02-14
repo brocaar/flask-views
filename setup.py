@@ -21,6 +21,7 @@ setup(
     tests_require=[
         'mock',
         'wtforms',
+        'mongoengine',
     ],
     test_suite='flask_views.tests.suite',
     classifiers=[
