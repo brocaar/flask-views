@@ -18,6 +18,9 @@ setup(
     install_requires=[
         'Flask',
     ],
+    tests_require=[
+        'mock',
+    ],
     test_suite='flask_views.tests.suite',
     classifiers=[
         'Development Status :: 4 - Beta',
