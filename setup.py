@@ -9,7 +9,7 @@ setup(
     author='Orne Brocaar',
     author_email='info@brocaar.com',
     description='Class based views for Flask',
-    long_description=open('README').read(),
+    long_description=open('README.rst').read(),
     packages=[
         'flask_views',
         'flask_views.db',
