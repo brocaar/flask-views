@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 import json
 
 from flask import current_app
@@ -39,12 +40,19 @@ class JSONView(JSONResponseMixin, View):
     Example usage::
 
         class ExampleJSONView(JSONView):
+            pass
 
-            def get_context_data(self, **kwargs):
-                return {
-                    'title': 'Page title',
-                    'body': 'Page body',
-                }
+    Requesting ``'/users/john/'`` with the URL route ``'/users/<user>/'`` will
+    then result in the following JSON data::
+
+        {
+            "params": {
+                "user": "john"
+            }
+        }
+
+    Probably you want to override the :py:meth:`~.JSONView.get_context_data`
+    method, to provide your own set of data that will be JSON encoded.
 
     """
     def get_context_data(self, **kwargs):
