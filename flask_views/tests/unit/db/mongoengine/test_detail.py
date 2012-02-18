@@ -35,7 +35,7 @@ class SingleObjectMixinTestCase(TestCase):
                     (Bar, 'bar'),
                 ]:
             mixin = SingleObjectMixin()
-            mixin.model = class_obj
+            mixin.model_class = class_obj
             self.assertEqual(expected, mixin.get_context_object_name())
 
     def test_get_queryset(self):
@@ -43,8 +43,8 @@ class SingleObjectMixinTestCase(TestCase):
         Test :py:meth:`.SingleObjectMixin.get_queryset`.
         """
         mixin = SingleObjectMixin()
-        mixin.model = Mock()
-        mixin.model.objects = 'objects-qs'
+        mixin.model_class = Mock()
+        mixin.model_class.objects = 'objects-qs'
         self.assertEqual('objects-qs', mixin.get_queryset())
 
     def test_get_object(self):
@@ -94,18 +94,18 @@ class SingleObjectMixinTestCase(TestCase):
         Test :py:meth:`.SingleObjectMixin.get_object` raising 404 exception.
         """
         mixin = SingleObjectMixin()
-        mixin.model = Mock()
-        mixin.model.DoesNotExist = Exception
+        mixin.model_class = Mock()
+        mixin.model_class.DoesNotExist = Exception
 
         queryset = Mock()
-        queryset.get.side_effect = mixin.model.DoesNotExist('Boom!')
+        queryset.get.side_effect = mixin.model_class.DoesNotExist('Boom!')
 
         mixin.get_queryset = Mock(return_value=queryset)
         mixin.kwargs = {
             'id': '1234abc',
         }
 
-        self.assertRaises(mixin.model.DoesNotExist, mixin.get_object)
+        self.assertRaises(mixin.model_class.DoesNotExist, mixin.get_object)
 
     def test_get_context_data(self):
         """

@@ -12,7 +12,7 @@ class DetailTestCase(BaseMongoTestCase):
         super(DetailTestCase, self).setUp()
 
         class TestView(DetailView):
-            model = self.TestDocument
+            model_class = self.TestDocument
             get_fields = {
                 'username': 'user',
             }

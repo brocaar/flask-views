@@ -71,7 +71,7 @@ class ModelFormMixinTestCase(TestCase):
         model_obj = Mock()
         mixin = ModelFormMixin()
         mixin.object = None
-        mixin.model = Mock(return_value=model_obj)
+        mixin.model_class = Mock(return_value=model_obj)
 
         self.assertEqual('form-valid', mixin.form_valid(form))
         form.populate_obj.assert_called_once_with(model_obj)

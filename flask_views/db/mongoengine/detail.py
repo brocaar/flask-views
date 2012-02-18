@@ -7,7 +7,7 @@ class SingleObjectMixin(object):
     """
     Mixin for retrieving a single object from the database.
     """
-    model = None
+    model_class = None
     """
     Document model class from which the object should be retrieved.
 
@@ -46,7 +46,7 @@ class SingleObjectMixin(object):
 
         If :py:attr:`.SingleObjectMixin.context_object_name` is set, that value
         will be returned, else it will use the lowercased name of the model
-        set in :py:attr:`.SingleObjectMixin.model`.
+        set in :py:attr:`.SingleObjectMixin.model_class`.
 
         :return:
             A ``str`` representing the object name.
@@ -55,7 +55,7 @@ class SingleObjectMixin(object):
         if self.context_object_name:
             return self.context_object_name
 
-        return self.model.__name__.lower()
+        return self.model_class.__name__.lower()
 
     def get_queryset(self):
         """
@@ -65,7 +65,7 @@ class SingleObjectMixin(object):
             An instance of :py:class:`!mongoengine.queryset.QuerySet`.
 
         """
-        return self.model.objects
+        return self.model_class.objects
 
     def get_object(self):
         """
@@ -86,7 +86,7 @@ class SingleObjectMixin(object):
 
         try:
             return self.get_queryset().get(**lookup_args)
-        except self.model.DoesNotExist:
+        except self.model_class.DoesNotExist:
             abort(404)
 
     def get_context_data(self, **kwargs):
@@ -150,7 +150,7 @@ class DetailView(TemplateResponseMixin, BaseDetailView):
                 'category': 'category',
                 'slug': 'slug',
             }
-            model = Article
+            model_class = Article
             template_name = 'article_detail.html'
 
     """
