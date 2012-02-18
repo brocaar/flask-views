@@ -47,7 +47,7 @@ class TemplateResponseMixin(object):
 
     def render_to_response(self, context_data={}):
         """
-        Render template with the given keyword arguments.
+        Render template with the given context data.
 
         :param context_data:
             A ``dict`` containing the context data. Optional.
