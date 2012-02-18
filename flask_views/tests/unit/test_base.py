@@ -64,7 +64,7 @@ class TemplateViewTestCase(unittest.TestCase):
             }
         }, view.get_context_data(foo='bar'))
 
-    def test_dispatch_request(self):
+    def test_get(self):
         """
         Test :py:meth:`.TemplateView.get`.
         """
