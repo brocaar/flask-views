@@ -45,7 +45,7 @@ class TemplateResponseMixinTestCase(unittest.TestCase):
         mixin.template_name = 'my/template.html'
 
         self.assertEqual(
-            'rendered-template', mixin.render_to_response(foo='bar'))
+            'rendered-template', mixin.render_to_response({'foo': 'bar'}))
         render_template.assert_called_once_with('my/template.html', foo='bar')
 
 
@@ -74,4 +74,4 @@ class TemplateViewTestCase(unittest.TestCase):
 
         self.assertEqual('response', view.get(bar='foo'))
         view.get_context_data.assert_called_once_with(bar='foo')
-        view.render_to_response.assert_called_once_with(foo='bar')
+        view.render_to_response.assert_called_once_with({'foo': 'bar'})

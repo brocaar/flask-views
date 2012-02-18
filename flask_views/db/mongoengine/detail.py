@@ -128,7 +128,7 @@ class BaseDetailView(SingleObjectMixin, View):
 
         """
         self.object = self.get_object()
-        return self.render_to_response(**self.get_context_data())
+        return self.render_to_response(self.get_context_data())
 
 
 class DetailView(TemplateResponseMixin, BaseDetailView):

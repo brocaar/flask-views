@@ -141,7 +141,7 @@ class BaseDetailViewTestCase(TestCase):
 
         self.assertEqual('response', view.get())
         self.assertEqual('object', view.object)
-        view.render_to_response.assert_called_once_with(foo='bar')
+        view.render_to_response.assert_called_once_with({'foo': 'bar'})
 
 
 class DetailViewTestCase(TestCase):

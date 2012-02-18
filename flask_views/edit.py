@@ -116,7 +116,7 @@ class FormMixin(object):
             Response containing the ``form`` in the context.
 
         """
-        return self.render_to_response(**self.get_context_data(form=form))
+        return self.render_to_response(self.get_context_data(form=form))
 
 
 class ProcessFormMixin(object):
@@ -137,7 +137,7 @@ class ProcessFormMixin(object):
 
         """
         form = self.get_form()
-        return self.render_to_response(**self.get_context_data(form=form))
+        return self.render_to_response(self.get_context_data(form=form))
 
     def post(self, *args, **kwargs):
         """

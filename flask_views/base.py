@@ -45,15 +45,18 @@ class TemplateResponseMixin(object):
     Set this variable to the template you want to render.
     """
 
-    def render_to_response(self, **kwargs):
+    def render_to_response(self, context_data={}):
         """
         Render template with the given keyword arguments.
+
+        :param context_data:
+            A ``dict`` containing the context data. Optional.
 
         :return:
             The rendered template as a string.
 
         """
-        return render_template(self.template_name, **kwargs)
+        return render_template(self.template_name, **context_data)
 
 
 class TemplateView(TemplateResponseMixin, View):
@@ -97,4 +100,4 @@ class TemplateView(TemplateResponseMixin, View):
             Output of :py:meth:`.TemplateResponseMixin.render_to_response`.
 
         """
-        return self.render_to_response(**self.get_context_data(**kwargs))
+        return self.render_to_response(self.get_context_data(**kwargs))
