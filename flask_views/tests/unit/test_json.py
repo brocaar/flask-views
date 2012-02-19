@@ -24,7 +24,28 @@ class JSONResponseMixinTestCase(TestCase):
             'response-class',
             mixin.render_to_response({'foo': 'bar'})
         )
-        json.dumps.assert_called_once_with({'foo': 'bar'})
+        json.dumps.assert_called_once_with({'foo': 'bar'}, cls=None)
+        current_app.response_class.assert_called_once_with(
+            'json-dump', mimetype='application/json')
+
+    @patch('flask_views.json.json')
+    @patch('flask_views.json.current_app')
+    def test_render_to_response_with_encoder_class(self, current_app, json):
+        """
+        Test :py:meth:`.JSONResponseMixin.render_to_response` with encoder cls.
+        """
+        current_app.response_class.return_value = 'response-class'
+        json.dumps.return_value = 'json-dump'
+
+        mixin = JSONResponseMixin()
+        mixin.encoder_class = Mock()
+
+        self.assertEqual(
+            'response-class',
+            mixin.render_to_response({'foo': 'bar'})
+        )
+        json.dumps.assert_called_once_with(
+            {'foo': 'bar'}, cls=mixin.encoder_class)
         current_app.response_class.assert_called_once_with(
             'json-dump', mimetype='application/json')
 

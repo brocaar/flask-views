@@ -10,6 +10,12 @@ class JSONResponseMixin(object):
     """
     Mixin class for rendering JSON responses.
     """
+    encoder_class = None
+    """
+    Set this to your custom implementation of :py:class:`!json.JSONEncoder`
+    if needed. Optional.
+    """
+
     def render_to_response(self, context_data={}):
         """
         Render JSON response for the given context data.
@@ -23,7 +29,7 @@ class JSONResponseMixin(object):
 
         """
         return current_app.response_class(
-            json.dumps(context_data),
+            json.dumps(context_data, cls=self.encoder_class),
             mimetype='application/json'
         )
 
