@@ -6,7 +6,7 @@ based on the Django class based views.
 
 Features:
 
-* Base views for rendering templates and (JSON) responses based on HTTP
+* Base views for rendering templates and (JSON) responses, dispatched by HTTP
   request method
 * Edit views for handling form submission (without database backend)
 * Database views
