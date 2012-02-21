@@ -40,7 +40,7 @@ class JSONView(JSONResponseMixin, View):
 
     This class inherits from:
 
-    * :py:class:`.JSONResponseMixin`
+    * :py:class:`~flask_views.json.JSONResponseMixin`
     * :py:class:`.View`
 
     Example usage::
