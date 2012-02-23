@@ -8,6 +8,9 @@ Changelog
   accepts context data as ``context_data`` argument.
 * :py:class:`flask_views.json.JSONResponseMixin` and
   :py:class:`flask_views.json.JSONView` classes added.
+* :py:class:`flask_views.db.mongoengine.json.JSONResponseMixin` and
+  :py:class:`flask_views.db.mongoengine.json.JSONDetailView` classes added.
+* :py:mod:`!unittest2` used for testing under Python < 2.7.
 
 
 0.1
