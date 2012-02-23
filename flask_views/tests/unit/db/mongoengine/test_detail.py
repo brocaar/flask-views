@@ -1,4 +1,4 @@
-from unittest import TestCase
+import unittest2 as unittest
 
 from mock import Mock
 
@@ -8,7 +8,7 @@ from flask_views.db.mongoengine.detail import (
 )
 
 
-class SingleObjectMixinTestCase(TestCase):
+class SingleObjectMixinTestCase(unittest.TestCase):
     """
     Tests for :py:class:`.SingleObjectMixin`.
     """
@@ -120,7 +120,7 @@ class SingleObjectMixinTestCase(TestCase):
         }, mixin.get_context_data(foo='bar'))
 
 
-class BaseDetailViewTestCase(TestCase):
+class BaseDetailViewTestCase(unittest.TestCase):
     """
     Tests for :py:class:`.BaseDetailView`.
     """
@@ -144,7 +144,7 @@ class BaseDetailViewTestCase(TestCase):
         view.render_to_response.assert_called_once_with({'foo': 'bar'})
 
 
-class DetailViewTestCase(TestCase):
+class DetailViewTestCase(unittest.TestCase):
     """
     Tests for :py:class:`.DetailView`.
     """

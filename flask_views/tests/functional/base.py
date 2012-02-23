@@ -1,9 +1,9 @@
-from unittest import TestCase
+import unittest2 as unittest
 
 from flask import Flask
 
 
-class BaseTestCase(TestCase):
+class BaseTestCase(unittest.TestCase):
     """
     Base test-case class.
     """

@@ -1,11 +1,11 @@
-from unittest import TestCase
+import unittest2 as unittest
 
 from mock import patch, Mock
 
 from flask_views.json import JSONResponseMixin, JSONView
 
 
-class JSONResponseMixinTestCase(TestCase):
+class JSONResponseMixinTestCase(unittest.TestCase):
     """
     Tests for :py:class:`.JSONResponseMixin`.
     """
@@ -50,7 +50,7 @@ class JSONResponseMixinTestCase(TestCase):
             'json-dump', mimetype='application/json')
 
 
-class JSONViewTestCase(TestCase):
+class JSONViewTestCase(unittest.TestCase):
     """
     Tests for :py:class:`.JSONView`.
     """

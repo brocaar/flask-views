@@ -1,4 +1,4 @@
-from unittest import TestCase
+import unittest2 as unittest
 
 from mock import patch, Mock
 
@@ -6,7 +6,7 @@ from flask_views.db.mongoengine.json import (
     MongoengineEncoder, JSONDetailView, JSONResponseMixin)
 
 
-class MongoengineEncoderTestCase(TestCase):
+class MongoengineEncoderTestCase(unittest.TestCase):
     """
     Tests for :py:class:`.MongoengineEncoder`.
     """
@@ -44,7 +44,7 @@ class MongoengineEncoderTestCase(TestCase):
         json.JSONEncoder.default.assert_called_once_with(encoder, obj)
 
 
-class JSONResponseMixinTestCase(TestCase):
+class JSONResponseMixinTestCase(unittest.TestCase):
     """
     Tests for :py:class:`.JSONResponseMixin`.
     """
@@ -56,7 +56,7 @@ class JSONResponseMixinTestCase(TestCase):
         self.assertEqual(MongoengineEncoder, mixin.encoder_class)
 
 
-class JSONDetailViewTestCase(TestCase):
+class JSONDetailViewTestCase(unittest.TestCase):
     """
     Tests for :py:class:`.JSONDetailView`.
     """

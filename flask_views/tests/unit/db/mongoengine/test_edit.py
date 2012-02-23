@@ -1,4 +1,4 @@
-from unittest import TestCase
+import unittest2 as unittest
 
 from mock import Mock, patch
 
@@ -10,7 +10,7 @@ from flask_views.db.mongoengine.edit import (
 from flask_views.edit import FormMixin, ProcessFormMixin
 
 
-class ModelFormMixinTestCase(TestCase):
+class ModelFormMixinTestCase(unittest.TestCase):
     """
     Tests for :py:class:`.ModelFormMixin`.
     """
@@ -98,7 +98,7 @@ class ModelFormMixinTestCase(TestCase):
         super_class.get_context_data.assert_called_once_with(foo='bar')
 
 
-class BaseCreateViewTestCase(TestCase):
+class BaseCreateViewTestCase(unittest.TestCase):
     """
     Tests for :py:class:`.BaseCreateView`.
     """
@@ -142,7 +142,7 @@ class BaseCreateViewTestCase(TestCase):
         super_class.post.assert_called_once_with('something', foo='bar')
 
 
-class CreateViewTestCase(TestCase):
+class CreateViewTestCase(unittest.TestCase):
     """
     Tests for :py:class:`.CreateView`.
     """
@@ -154,7 +154,7 @@ class CreateViewTestCase(TestCase):
             self.assertIn(class_obj, CreateView.mro())
 
 
-class BaseUpdateViewTestCase(TestCase):
+class BaseUpdateViewTestCase(unittest.TestCase):
     """
     Tests for :py:class:`.BaseUpdateView`.
     """
@@ -191,7 +191,7 @@ class BaseUpdateViewTestCase(TestCase):
         super_class.post.assert_called_once_with('something', foo='bar')
 
 
-class UpdateViewTestCase(TestCase):
+class UpdateViewTestCase(unittest.TestCase):
     """
     Tests for :py:class:`.UpdateView`.
     """
