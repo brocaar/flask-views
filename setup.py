@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='Flask-Views',
-    version='0.2dev',
+    version='0.2',
     url='http://github.com/brocaar/flask-views',
     license='BSD',
     author='Orne Brocaar',
