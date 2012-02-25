@@ -5,7 +5,7 @@ from flask_views.base import TemplateResponseMixin, View
 
 class FormMixin(object):
     """
-    Mixin for handling forms.
+    Mixin for handling form submissions.
     """
     form_class = None
     """
@@ -29,15 +29,19 @@ class FormMixin(object):
     success_url = None
     """
     Set this to the URL the user should be redirected to after a successful
-    form submittion.
+    form submission.
     """
 
     def get_initial(self):
         """
         Return initial form data.
 
+        Override this method when the initial form data should be generated
+        dynamically. By default this returns
+        :py:data:`~flask_views.edit.FormMixin.initial`.
+
         :return:
-            :py:data:`flask_views.edit.FormMixin.initial`.
+            :py:data:`~flask_views.edit.FormMixin.initial`.
 
         """
         return self.initial
@@ -46,8 +50,12 @@ class FormMixin(object):
         """
         Return success URL.
 
+        Override this method when the success URL depends on the submitted
+        form data or when it should be generated during an request. By default,
+        this returns :py:data:`~flask_views.edit.FormMixin.success_url`.
+
         :return:
-            :py:data:`flask_views.edit.FormMixin.success_url`.
+            :py:data:`~flask_views.edit.FormMixin.success_url`.
 
         """
         return self.success_url
@@ -79,7 +87,7 @@ class FormMixin(object):
         Return an instance of the form class.
 
         :return:
-            Instance :py:class:`flask_views.edit.FormMixin.form_class`.
+            Instance :py:class:`~flask_views.edit.FormMixin.form_class`.
 
         """
         return self.form_class(**self.get_form_kwargs())
@@ -89,7 +97,7 @@ class FormMixin(object):
         Handle valid form submission.
 
         This redirects the user to the URL returned by
-        :py:meth:`flask_views.edit.FormMixin.get_success_url`. You want to
+        :py:meth:`~flask_views.edit.FormMixin.get_success_url`. You want to
         override this method for processing the submitted form data.
 
         :param form:
@@ -97,7 +105,7 @@ class FormMixin(object):
 
         :return:
             Redirect to URL returned by
-            :py:meth:`flask_views.edit.FormMixin.get_success_url`.
+            :py:meth:`~flask_views.edit.FormMixin.get_success_url`.
 
         """
         return redirect(self.get_success_url())
@@ -127,7 +135,7 @@ class ProcessFormMixin(object):
 
     def get(self, *args, **kwargs):
         """
-        Handler for ``GET`` requests.
+        Handler for GET requests.
 
         This will call ``render_to_response`` with an instance of the form
         as ``form`` in the context data.
@@ -141,7 +149,7 @@ class ProcessFormMixin(object):
 
     def post(self, *args, **kwargs):
         """
-        Handler for ``POST`` requests.
+        Handler for POST requests.
 
         On a valid form submission, this will dispatch the request to
         the ``form_valid`` method, else it is dispatched to ``form_invalid``.

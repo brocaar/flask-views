@@ -10,14 +10,15 @@ class View(MethodView):
 
     * :py:class:`!flask.views.MethodView`
 
-    Example usage::
+    For example, a GET request will be dispatched to the ``get`` method, a POST
+    request will be dispatched to the ``post`` method. Example usage::
 
         class MethodView(View):
 
             def get(self, *args, **kwargs):
                 return 'Hello {0}'.format(self.kwargs.get('user'))
 
-    When you have a URL route ``'/<user>/'`` and you request, ``/john/``, it
+    When you have a URL route ``'/<user>/'`` and you GET ``/john/``, it
     will return ``'Hello john'``.
 
     """
@@ -38,6 +39,12 @@ class View(MethodView):
 class TemplateResponseMixin(object):
     """
     Mixin class for rendering templates.
+
+    This will use the :py:meth:`!flask.render_template` method for rendering
+    (Jinja2) templates.
+
+    .. seealso:: http://jinja.pocoo.org/
+
     """
 
     template_name = None
