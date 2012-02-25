@@ -1,6 +1,11 @@
 Changelog
 =========
 
+0.2.1
+-----
+
+* Documentation improvements.
+
 0.2
 ---
 
