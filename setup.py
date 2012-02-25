@@ -25,6 +25,7 @@ setup(
         'unittest2',
     ],
     test_suite='flask_views.tests.suite',
+    zip_safe=False,
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',

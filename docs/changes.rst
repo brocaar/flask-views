@@ -5,6 +5,8 @@ Changelog
 -----
 
 * Documentation improvements.
+* Tests added to source distribution.
+
 
 0.2
 ---
