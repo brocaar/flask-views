@@ -67,7 +67,9 @@ Article view
     )
 
 
-Documentation
--------------
+Links
+-----
 
-See: http://packages.python.org/Flask-Views/
+* `Documentation <http://packages.python.org/Flask-Views/>`_
+* `GitHub <http://github.com/brocaar/flask-views/>`_
+* `Development version <http://github.com/brocaar/flask-views/zipball/master#egg=Flask-Views-dev>`_
