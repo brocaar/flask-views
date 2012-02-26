@@ -1,5 +1,7 @@
+from flask import redirect
+
 from flask_views.base import TemplateResponseMixin, View
-from flask_views.db.mongoengine.detail import SingleObjectMixin
+from flask_views.db.mongoengine.detail import BaseDetailView, SingleObjectMixin
 from flask_views.edit import FormMixin, ProcessFormMixin
 
 
@@ -180,5 +182,96 @@ class UpdateView(TemplateResponseMixin, BaseUpdateView):
 
     .. seealso:: :py:attr:`.SingleObjectMixin.get_fields` for more information
         about how the object is retrieved from the database.
+
+    """
+
+
+class DeletionMixin(object):
+    """
+    Mixin class for deleting a single object.
+    """
+    success_url = None
+    """
+    Set this to the URL the user should be redirected to after a successful
+    deletion.
+    """
+
+    def get_success_url(self):
+        """
+        Return success URL.
+
+        Override this method when the success URL depends on the deleted object
+        or when it should be generated during an request. By default, this
+        returns
+        :py:data:`~flask_views.db.mongoengine.edit.DeletionMixin.success_url`.
+
+        :return:
+            :data:`~flask_views.db.mongoengine.edit.DeletionMixin.success_url`.
+
+        """
+        return self.success_url
+
+    def delete(self, *args, **kwargs):
+        """
+        Delete object and redirect user to configured success URL.
+
+        :return:
+            Redirect to URL returned by
+            :py:meth:`~.DeletionMixin.get_success_url`.
+
+        """
+        self.object.delete()
+        return redirect(self.get_success_url())
+
+
+class BaseDeleteView(DeletionMixin, BaseDetailView):
+    """
+    Base view class for deleting a single object.
+
+    This class inherits from:
+
+    * :py:class:`.DeletionMixin`
+    * :py:class:`.BaseDetailView`
+
+    This class implements all logic for deleting a single object from the
+    database, but does not implement rendering responses. See
+    :py:class:`.DetailView` for an usage example.
+
+    """
+    def delete(self, *args, **kwargs):
+        """
+        Handler for DELETE requests.
+
+        This retrieves the object from the database. Then it will call
+        :py:meth:`.DeletionMixin.delete`.
+
+        :return:
+            Return of :py:meth:`.DeletionMixin.delete`.
+
+        """
+        self.object = self.get_object()
+        return super(BaseDeleteView, self).delete(*args, **kwargs)
+
+
+class DeleteView(TemplateResponseMixin, BaseDeleteView):
+    """
+    View class for deleting a single object.
+
+    This class inherits from:
+
+    * :py:class:`.TemplateResponseMixin`
+    * :py:class:`.BaseDeleteView`
+
+    This class implements all logic for deleting a single object from the
+    database, including rendering a template.
+
+    Usage example::
+
+        class DeleteArticleView(DeleteView):
+            get_fields = {
+                'id': 'id',
+            }
+            document_class = Article
+            template_name = 'article_delete.html'
 
     """

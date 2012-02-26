@@ -4,16 +4,20 @@ Edit views
 Views
 -----
 
-``BaseFormView``
-~~~~~~~~~~~~~~~~
-
-.. autoclass:: flask_views.edit.BaseFormView
-    :members:
-
 ``FormView``
 ~~~~~~~~~~~~
 
 .. autoclass:: flask_views.edit.FormView
+    :members:
+
+
+Base views
+----------
+
+``BaseFormView``
+~~~~~~~~~~~~~~~~
+
+.. autoclass:: flask_views.edit.BaseFormView
     :members:
 
 

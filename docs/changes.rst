@@ -4,7 +4,7 @@ Changelog
 0.3 (in development)
 --------------------
 
-* ...
+* Classes added for removing a single Mongoengine document.
 
 
 0.2.1

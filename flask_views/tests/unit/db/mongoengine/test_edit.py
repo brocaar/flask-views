@@ -5,7 +5,13 @@ from mock import Mock, patch
 from flask_views.base import View, TemplateResponseMixin
 from flask_views.db.mongoengine.detail import SingleObjectMixin
 from flask_views.db.mongoengine.edit import (
-    ModelFormMixin, BaseCreateView, CreateView, BaseUpdateView, UpdateView
+    BaseCreateView,
+    BaseDeleteView,
+    BaseUpdateView,
+    CreateView,
+    DeletionMixin,
+    ModelFormMixin,
+    UpdateView,
 )
 from flask_views.edit import FormMixin, ProcessFormMixin
 
@@ -198,3 +204,52 @@ class UpdateViewTestCase(unittest.TestCase):
     def test_inherited_classes(self):
         for class_obj in [TemplateResponseMixin, BaseUpdateView]:
             self.assertIn(class_obj, UpdateView.mro())
+
+
+class DeletionMixinTestCase(unittest.TestCase):
+    """
+    Tests for :py:class:`.DeletionMixin`.
+    """
+    def test_get_success_url(self):
+        """
+        Test :py:meth:`.DeletionMixin.get_success_url`.
+        """
+        mixin = DeletionMixin()
+        mixin.success_url = 'success-url'
+        self.assertEqual('success-url', mixin.get_success_url())
+
+    @patch('flask_views.db.mongoengine.edit.redirect')
+    def test_delete(self, redirect):
+        """
+        Test :py:meth:`.DeletionMixin.delete`.
+        """
+        mixin = DeletionMixin()
+        mixin.object = Mock()
+        mixin.get_success_url = Mock(return_value='success-url')
+
+        self.assertEqual(redirect.return_value, mixin.delete())
+        mixin.object.delete.assert_called_once_with()
+        redirect.assert_called_once_with('success-url')
+
+
+class BaseDeleteViewTestCase(unittest.TestCase):
+    """
+    Tests for :py:class:`.BaseDeleteView`.
+    """
+    @patch('flask_views.db.mongoengine.edit.super', create=True)
+    def test_delete(self, super_mock):
+        """
+        Test :py:meth:`.BaseDeleteView.delete`.
+        """
+        super_class = Mock()
+        super_mock.return_value = super_class
+
+        view = BaseDeleteView()
+        view.get_object = Mock()
+
+        self.assertEqual(
+            super_class.delete.return_value,
+            view.delete('foo', bar='foo')
+        )
+        self.assertEqual(view.get_object.return_value, view.object)
+        super_class.delete.assert_called_once_with('foo', bar='foo')

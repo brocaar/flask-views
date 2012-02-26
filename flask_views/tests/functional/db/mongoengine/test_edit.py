@@ -1,6 +1,6 @@
 from flask import url_for
 
-from flask_views.db.mongoengine.edit import CreateView, UpdateView
+from flask_views.db.mongoengine.edit import CreateView, UpdateView, DeleteView
 from flask_views.tests.functional.db.mongoengine.base import BaseMongoTestCase
 
 
@@ -108,3 +108,50 @@ class UpdateViewTestCase(BaseMongoTestCase):
         self.assertEqual(1, self.TestDocument.objects.count())
 
         self.TestDocument.objects.get(username='john', name='Foo Bar')
+
+
+class DeleteViewTestCase(BaseMongoTestCase):
+    """
+    Tests for :py:class:`.DeleteView`.
+    """
+    def setUp(self):
+        super(DeleteViewTestCase, self).setUp()
+
+        class TestView(DeleteView):
+            document_class = self.TestDocument
+            template_name = 'detail_template.html'
+            success_url = 'http://google.com/'
+            get_fields = {
+                'username': 'user',
+            }
+
+        self.app.add_url_rule('/<user>/', view_func=TestView.as_view('test'))
+
+        self.TestDocument(username='foo', name='bar').save()
+        self.TestDocument(username='bar', name='foo').save()
+
+    def test_get(self):
+        """
+        Test GET request.
+        """
+        with self.app.test_request_context():
+            response = self.client.get(url_for('test', user='foo'))
+        self.assertEqual(200, response.status_code)
+        self.assertEqual('bar', response.data)
+
+    def test_delete(self):
+        """
+        Test DELETE request.
+        """
+        self.assertEqual(2, self.TestDocument.objects.count())
+        with self.app.test_request_context():
+            response = self.client.delete(url_for('test', user='foo'))
+        self.assertEqual(302, response.status_code)
+        self.assertEqual('http://google.com/', response.headers['Location'])
+        self.assertEqual(1, self.TestDocument.objects.count())
+
+        self.TestDocument.objects.get(username='bar')
+        self.assertRaises(
+            self.TestDocument.DoesNotExist,
+            self.TestDocument.objects.get, username='foo'
+        )

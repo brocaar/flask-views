@@ -4,17 +4,20 @@ Detail views
 Views
 -----
 
-``BaseDetailView``
-~~~~~~~~~~~~~~~~~~
-
-.. autoclass:: flask_views.db.mongoengine.detail.BaseDetailView
-    :members:
-
-
 ``DetailView``
 ~~~~~~~~~~~~~~
 
 .. autoclass:: flask_views.db.mongoengine.detail.DetailView
+    :members:
+
+
+Base views
+----------
+
+``BaseDetailView``
+~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: flask_views.db.mongoengine.detail.BaseDetailView
     :members:
 
 
