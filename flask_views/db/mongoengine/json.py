@@ -54,7 +54,7 @@ class JSONDetailView(JSONResponseMixin, BaseDetailView):
                 'category': 'category',
                 'slug': 'slug',
             }
-            model_class = Article
+            document_class = Article
 
     """
     def get_context_data(self):

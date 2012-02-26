@@ -19,9 +19,9 @@ class JSONDetailViewTestCase(BaseMongoTestCase):
             body = fields.StringField(required=True)
         self.TestEmbeddedDocument = TestEmbeddedDocument
 
-    def setup_test_view(self, document_class):
+    def setup_test_view(self, document):
         class TestView(JSONDetailView):
-            model_class = document_class
+            document_class = document
             get_fields = {
                 'username': 'user',
             }

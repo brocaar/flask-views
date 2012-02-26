@@ -12,7 +12,7 @@ class CreateViewTestCase(BaseMongoTestCase):
         super(CreateViewTestCase, self).setUp()
 
         class TestView(CreateView):
-            model_class = self.TestDocument
+            document_class = self.TestDocument
             form_class = self.TestForm
             template_name = 'model_form_view.html'
             success_url = 'http://google.com/'
@@ -71,7 +71,7 @@ class UpdateViewTestCase(BaseMongoTestCase):
         super(UpdateViewTestCase, self).setUp()
 
         class TestView(UpdateView):
-            model_class = self.TestDocument
+            document_class = self.TestDocument
             form_class = self.TestForm
             template_name = 'model_form_view.html'
             success_url = 'http://google.com/'

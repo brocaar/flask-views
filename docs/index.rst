@@ -57,8 +57,8 @@ Article view
             'category': 'category',
             'slug': 'slug',
         }
-        # For creating model classes, see the Mongoengine documentation
-        model_class = Article
+        # For creating document classes, see the Mongoengine documentation
+        document_class = Article
         template_name = 'article_detail.html'
 
     app.add_url_rule(

@@ -40,7 +40,7 @@ class ModelFormMixin(FormMixin, SingleObjectMixin):
 
         """
         if not self.object:
-            self.object = self.model_class()
+            self.object = self.document_class()
         form.populate_obj(self.object)
         self.object.save()
         return super(ModelFormMixin, self).form_valid(form)
@@ -119,7 +119,7 @@ class CreateView(TemplateResponseMixin, BaseCreateView):
 
         class PostCreateView(CreateView):
             form_class = PostForm
-            model_class = Post
+            document_class = Post
             template_name = 'post_form.html'
 
             def get_success_url(self):
@@ -172,7 +172,7 @@ class UpdateView(TemplateResponseMixin, BaseUpdateView):
 
         class PostUpdateView(UpdateView):
             form_class = PostForm
-            model_class = Post
+            document_class = Post
             template_name = 'post_form.html'
 
             def get_success_url(self):

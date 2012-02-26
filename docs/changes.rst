@@ -6,6 +6,8 @@ Changelog
 
 * Documentation improvements.
 * Tests added to source distribution.
+* Renamed ``model_class`` to
+  :attr:`~flask_views.db.mongoengine.detail.SingleObjectMixin.document_class`.
 
 
 0.2
