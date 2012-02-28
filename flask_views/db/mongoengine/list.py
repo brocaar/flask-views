@@ -48,3 +48,13 @@ class MultipleObjectMixin(object):
             filter_fields[field_name] = self.kwargs.get(mapping_name, None)
 
         return filter_fields
+
+    def get_queryset(self):
+        """
+        Return ``QuerySet`` class used to retrieve objects.
+
+        :return:
+            An instance of :py:class:`!mongoengine.qeryset.QuerySet`.
+
+        """
+        return self.document_class.objects

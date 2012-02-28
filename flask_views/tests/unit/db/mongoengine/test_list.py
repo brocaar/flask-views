@@ -1,5 +1,7 @@
 import unittest2 as unittest
 
+from mock import Mock
+
 from flask_views.db.mongoengine.list import MultipleObjectMixin
 
 
@@ -31,3 +33,11 @@ class MultipleObjectMixinTestCase(unittest.TestCase):
             'cat': 'foo',
             'user': 'bar',
         }, mixin.get_filter_fields())
+
+    def test_get_queryset(self):
+        """
+        Test :py:meth:`.MultipleObjectMixin.get_queryset`.
+        """
+        mixin = MultipleObjectMixin()
+        mixin.document_class = Mock()
+        self.assertEqual(mixin.document_class.objects, mixin.get_queryset())
