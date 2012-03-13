@@ -1,4 +1,4 @@
-
+from flask import request
 
 
 class MultipleObjectMixin(object):
@@ -12,6 +12,7 @@ class MultipleObjectMixin(object):
     .. seealso:: http://mongoengine.org/
 
     """
+
     filter_fields = {}
     """
     A ``dict`` containing the fieldname mapped against the URL variable name.
@@ -29,6 +30,19 @@ class MultipleObjectMixin(object):
     When the result should not be filtered, set this to ``{}`` (default).
 
     """
+
+    page_number_argument = 'page'
+    """
+    A ``str`` representing the argument which should be used to retrieve the
+    current page.
+    """
+
+    items_per_page = 0
+    """
+    An ``int`` representing the number of items that should be displayed per
+    page. Set this to ``0`` when no pagination should be applied.
+    """
+
     def get_filter_fields(self):
         """
         Return a ``dict`` with the fields to filter on.
@@ -58,3 +72,26 @@ class MultipleObjectMixin(object):
 
         """
         return self.document_class.objects
+
+    def get_page_number(self):
+        """
+        Return page number.
+
+        This will first try to get the current page number from the URL route
+        arguments. Failing that, it will try to retrieve the current page from
+        the URL parameters. Failing that, ``1`` is returned.
+
+        .. note:: This uses the name specified
+            in :py:attr:`~.MultipleObjectMixin.page_number_argument`.
+
+        :return:
+            An ``int`` representing the current page number.
+
+        """
+        try:
+            return self.kwargs[self.page_number_argument]
+        except KeyError:
+            try:
+                return int(request.args[self.page_number_argument])
+            except (KeyError, ValueError):
+                return 1
