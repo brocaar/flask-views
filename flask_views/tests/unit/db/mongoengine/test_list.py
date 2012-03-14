@@ -79,3 +79,31 @@ class MultipleObjectMixinTestCase(unittest.TestCase):
         mixin = MultipleObjectMixin()
         mixin.kwargs = {}
         self.assertEqual(1, mixin.get_page_number())
+
+    def test_get_object_list_no_pagination(self):
+        """
+        Test :py:meth:`.MultipleObjectMixin.get_object_list` without pagination
+        """
+        query_set = Mock()
+
+        mixin = MultipleObjectMixin()
+        mixin.get_queryset = Mock(return_value=query_set)
+
+        self.assertEqual(query_set.all.return_value, mixin.get_object_list())
+        query_set.all.assert_called_once_with()
+
+    def test_get_object_list(self):
+        """
+        Test :py:meth:`.MultipleObjectMixin.get_object_list` with pagination.
+        """
+        class DummyQuerySet(object):
+            def __getitem__(self, item):
+                return '{0}:{1}'.format(item.start, item.stop)
+
+        mixin = MultipleObjectMixin()
+        mixin.get_queryset = Mock(return_value=DummyQuerySet())
+        mixin.items_per_page = 10
+
+        for index, expected in enumerate(['0:10', '10:20', '20:30']):
+            mixin.get_page_number = Mock(return_value=index + 1)
+            self.assertEqual(expected, mixin.get_object_list())

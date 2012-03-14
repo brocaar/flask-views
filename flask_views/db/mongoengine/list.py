@@ -1,4 +1,4 @@
-from flask import request
+from flask import abort, request
 
 
 class MultipleObjectMixin(object):
@@ -95,3 +95,25 @@ class MultipleObjectMixin(object):
                 return int(request.args[self.page_number_argument])
             except (KeyError, ValueError):
                 return 1
+
+    def get_object_list(self):
+        """
+        Return (optionally paginated) list of objects.
+
+        When :py:attr:`~.MultipleObjectMixin.items_per_page` is not ``0``, this
+        list will be paginated.
+
+        :return:
+            A ``list`` of objects.
+
+        """
+        if not self.items_per_page:
+            return self.get_queryset().all()
+
+        start_index = (self.get_page_number() - 1) * self.items_per_page
+        end_index = self.get_page_number() * self.items_per_page
+
+        try:
+            return self.get_queryset()[start_index:end_index]
+        except IndexError:
+            abort(404)
