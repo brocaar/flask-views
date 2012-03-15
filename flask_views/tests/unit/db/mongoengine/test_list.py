@@ -107,3 +107,40 @@ class MultipleObjectMixinTestCase(unittest.TestCase):
         for index, expected in enumerate(['0:10', '10:20', '20:30']):
             mixin.get_page_number = Mock(return_value=index + 1)
             self.assertEqual(expected, mixin.get_object_list())
+
+    @patch('flask_views.db.mongoengine.list.abort')
+    def test_get_object_list_404(self, abort):
+        """
+        Test :py:meth:`.MultipleObjectMixin.get_object_list` returning 404.
+        """
+        mixin = MultipleObjectMixin()
+        mixin.items_per_page = 10
+        mixin.get_page_number = Mock(return_value=2)
+        mixin.get_queryset = Mock(side_effect=IndexError)
+        self.assertEqual(None, mixin.get_object_list())
+        abort.assert_called_once_with(404)
+
+    def test_get_context_object_name_set(self):
+        """
+        Test :py:meth:`.MultipleObjectMixin.get_context_object_name`.
+
+        This tests with ``context_object_name`` variable set.
+
+        """
+        mixin = MultipleObjectMixin()
+        mixin.context_object_name = 'myobject_list'
+        self.assertEqual('myobject_list', mixin.get_context_object_name())
+
+    def test_get_ontext_object_name_from_object(self):
+        """
+        Test :py:meth:`.MultipleObjectMixin.get_context_object_name`.
+
+        This tests generating the object name from the document class.
+
+        """
+        class MyObject(object):
+            pass
+
+        mixin = MultipleObjectMixin()
+        mixin.document_class = MyObject
+        self.assertEqual('myobject_list', mixin.get_context_object_name())

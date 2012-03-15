@@ -43,6 +43,13 @@ class MultipleObjectMixin(object):
     page. Set this to ``0`` when no pagination should be applied.
     """
 
+    context_object_name = None
+    """
+    The variable name for the list of objects in the template context. If
+    ``None``, it will get the name of the model class (Eg: a class ``Page``
+    would be available as ``page_list``).
+    """
+
     def get_filter_fields(self):
         """
         Return a ``dict`` with the fields to filter on.
@@ -117,3 +124,21 @@ class MultipleObjectMixin(object):
             return self.get_queryset()[start_index:end_index]
         except IndexError:
             abort(404)
+
+    def get_context_object_name(self):
+        """
+        Return the context object name.
+
+        If :py:attr:`~.MultipleObjectMixin.context_object_name` is set, that
+        value will be returned, else it will use the lowercased name of the
+        document set in :py:attr:`~.MultipleObjectMixin.document_class` with
+        ``_list`` suffix.
+
+        :return:
+            A ``str`` representing the object name.
+
+        """
+        if self.context_object_name:
+            return self.context_object_name
+
+        return '{0}_list'.format(self.document_class.__name__.lower())
