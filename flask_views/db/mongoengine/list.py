@@ -2,6 +2,8 @@ from math import ceil
 
 from flask import abort, request
 
+from flask_views.base import View, TemplateResponseMixin
+
 
 class MultipleObjectMixin(object):
     """
@@ -193,3 +195,57 @@ class MultipleObjectMixin(object):
             self.get_context_object_name(): self.get_paginated_object_list(),
         })
         return kwargs
+
+
+class BaseListView(MultipleObjectMixin, View):
+    """
+    Base list view.
+
+    This class inherits from:
+
+    * :py:class:`.MultipleObjectMixin`
+    * :py:class:`.View`
+
+    This class implements all logic for retrieving a list of objects from the
+    database, but does not implement rendering responses. See
+    :py:class:`.ListView` for an usage example.
+
+    """
+    def get(self, *args, **kwargs):
+        """
+        Handler for GET requests.
+
+        This retrieves the list of objects from the database and calls the
+        ``render_to_response`` with the retrieved objects in the context
+        data.
+
+        :return:
+            Ouput of ``render_to_response`` method implementation.
+
+        """
+        return self.render_to_response(self.get_context_data())
+
+
+class ListView(TemplateResponseMixin, BaseListView):
+    """
+    List view for rendering a list of objects.
+
+    This class inherits from:
+
+    * :py:class:`.TemplateResponseMixin`
+    * :py:class:`.BaseListView`
+
+    This implements all logic for retrieving a list of objects from the
+    database, including rendering a template.
+
+    Usage example::
+
+        class ArticleView(ListView):
+            filter_fields = {
+                'category': 'category',
+            }
+            items_per_page = 5
+            document_class = Article
+            template_name = 'article_list.html'
+
+    """

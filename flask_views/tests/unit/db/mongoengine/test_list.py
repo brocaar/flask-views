@@ -2,7 +2,7 @@ import unittest2 as unittest
 
 from mock import Mock, patch
 
-from flask_views.db.mongoengine.list import MultipleObjectMixin
+from flask_views.db.mongoengine.list import BaseListView, MultipleObjectMixin
 
 
 class MultipleObjectMixinTestCase(unittest.TestCase):
@@ -237,3 +237,20 @@ class MultipleObjectMixinTestCase(unittest.TestCase):
             'items_per_page': 0,
             'foo_bar': mixin.get_paginated_object_list.return_value,
         }, mixin.get_context_data(foo='bar'))
+
+
+class BaseListViewTestCase(unittest.TestCase):
+    """
+    Tests for :py:class:`.BaseListView`.
+    """
+    def test_get(self):
+        """
+        Test :py:meth:`.BaseListView.get`.
+        """
+        view = BaseListView()
+        view.render_to_response = Mock()
+        view.get_context_data = Mock()
+
+        self.assertEqual(view.render_to_response.return_value, view.get())
+        view.render_to_response.assert_called_once_with(
+            view.get_context_data.return_value)
