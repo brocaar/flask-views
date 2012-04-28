@@ -35,6 +35,4 @@ class BaseMongoTestCase(BaseTestCase):
         self.TestForm = TestForm
 
     def tearDown(self):
-        for collection in self.db.collection_names():
-            if collection.split('.')[0] != 'system':
-                self.db.drop_collection(collection)
+        self.TestDocument.drop_collection()
