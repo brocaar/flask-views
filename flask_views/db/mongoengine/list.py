@@ -1,3 +1,5 @@
+from math import ceil
+
 from flask import abort, request
 
 
@@ -80,6 +82,24 @@ class MultipleObjectMixin(object):
         """
         return self.document_class.objects
 
+    def get_filtered_queryset(self):
+        """
+        Return filtered instance of ``QuerySet``.
+
+        .. note:: This uses the filter fields defined
+            in :py:attr:`~.MultipleObjectMixin.filter_fields`.
+
+        :return:
+            An instance of :py:class:`!mongoengine.qeryset.QuerySet`.
+
+        """
+        filter_fields_dict = self.get_filter_fields()
+
+        if not filter_fields_dict:
+            return self.get_queryset()
+
+        return self.get_queryset().filter(**filter_fields_dict)
+
     def get_page_number(self):
         """
         Return page number.
@@ -103,25 +123,41 @@ class MultipleObjectMixin(object):
             except (KeyError, ValueError):
                 return 1
 
-    def get_object_list(self):
+    def get_page_count(self):
         """
-        Return (optionally paginated) list of objects.
+        Return the total number of pages.
 
-        When :py:attr:`~.MultipleObjectMixin.items_per_page` is not ``0``, this
-        list will be paginated.
+        :return:
+            An ``int`` representing the total number of available pages or
+            ``None`` when :py:attr:`~.MultipleObjectMixin.items_per_page` is
+            set to ``0``.
+
+        """
+        if not self.items_per_page:
+            return None
+
+        count = self.get_filtered_queryset().count()
+        return int(ceil(float(count) / float(self.items_per_page)))
+
+    def get_paginated_object_list(self):
+        """
+        Return paginated list of objects.
+
+        When :py:attr:`~.MultipleObjectMixin.items_per_page` is ``0``, this
+        method will return the complete list.
 
         :return:
             A ``list`` of objects.
 
         """
         if not self.items_per_page:
-            return self.get_queryset().all()
+            return self.get_filtered_queryset()
 
         start_index = (self.get_page_number() - 1) * self.items_per_page
         end_index = self.get_page_number() * self.items_per_page
 
         try:
-            return self.get_queryset()[start_index:end_index]
+            return self.get_filtered_queryset()[start_index:end_index]
         except IndexError:
             abort(404)
 
@@ -142,3 +178,18 @@ class MultipleObjectMixin(object):
             return self.context_object_name
 
         return '{0}_list'.format(self.document_class.__name__.lower())
+
+    def get_context_data(self, **kwargs):
+        """
+        Return context data containing retrieved object list.
+
+        :return:
+            A ``dict`` containing the retrieved object list.
+
+        """
+        kwargs.update({
+            'is_paginated': self.items_per_page > 0,
+            'items_per_page': self.items_per_page,
+            self.get_context_object_name(): self.get_paginated_object_list(),
+        })
+        return kwargs
