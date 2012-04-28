@@ -5,6 +5,7 @@ Changelog
 --------------------
 
 * Classes added for removing a single Mongoengine document.
+* Classes added for rendering a list of Mongoengine objects.
 
 
 0.2.1
