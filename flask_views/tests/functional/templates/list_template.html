@@ -1,0 +1,4 @@
+Is paginated: {{ is_paginated }}
+Users: {{ testdocument_list|join(', ', attribute='username') }}
+Current page: {{ current_page_number }}
+Total page count: {{ total_page_count }}

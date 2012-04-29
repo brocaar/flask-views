@@ -113,6 +113,9 @@ class MultipleObjectMixin(object):
         .. note:: This uses the name specified
             in :py:attr:`~.MultipleObjectMixin.page_number_argument`.
 
+        .. warning:: Make sure you cast the URL route argument for the page
+            number to an ``int``. Example: ``/<category>/<int:page>/``.
+
         :return:
             An ``int`` representing the current page number.
 
