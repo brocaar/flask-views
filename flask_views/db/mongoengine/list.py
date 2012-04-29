@@ -158,10 +158,12 @@ class MultipleObjectMixin(object):
         start_index = (self.get_page_number() - 1) * self.items_per_page
         end_index = self.get_page_number() * self.items_per_page
 
-        try:
-            return self.get_filtered_queryset()[start_index:end_index]
-        except IndexError:
+        object_list = self.get_filtered_queryset()[start_index:end_index]
+
+        if not len(object_list) and self.get_page_number() > 1:
             abort(404)
+        else:
+            return object_list
 
     def get_context_object_name(self):
         """
@@ -186,12 +188,25 @@ class MultipleObjectMixin(object):
         Return context data containing retrieved object list.
 
         :return:
-            A ``dict`` containing the retrieved object list.
+            A ``dict`` containing the following keys:
+
+            ``is_paginated``
+                ``True`` if pagination is enabled, else ``False``.
+
+            ``current_page_number``
+                The current page number (``int``).
+
+            ``total_page_count``
+                The total number of pages (``int``).
+
+            The key name containing the returned object list is generated
+            by :py:meth:`.MultipleObjectMixin.get_context_object_name`.
 
         """
         kwargs.update({
             'is_paginated': self.items_per_page > 0,
-            'items_per_page': self.items_per_page,
+            'current_page_number': self.get_page_number(),
+            'total_page_count': self.get_page_count(),
             self.get_context_object_name(): self.get_paginated_object_list(),
         })
         return kwargs

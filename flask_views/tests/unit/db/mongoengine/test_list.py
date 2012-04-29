@@ -178,7 +178,7 @@ class MultipleObjectMixinTestCase(unittest.TestCase):
         mixin = MultipleObjectMixin()
         mixin.items_per_page = 10
         mixin.get_page_number = Mock(return_value=2)
-        mixin.get_filtered_queryset = Mock(side_effect=IndexError)
+        mixin.get_filtered_queryset = Mock(return_value=[])
         self.assertEqual(None, mixin.get_paginated_object_list())
         abort.assert_called_once_with(404)
 
@@ -207,19 +207,22 @@ class MultipleObjectMixinTestCase(unittest.TestCase):
         mixin.document_class = MyObject
         self.assertEqual('myobject_list', mixin.get_context_object_name())
 
-    def test_get_context_data_is_paginated(self):
+    def test_get_context_data_paginated(self):
         """
         Test :py:meth:`.MultipleObjectMixin.get_context_data` paginated.
         """
         mixin = MultipleObjectMixin()
         mixin.items_per_page = 1
+        mixin.get_page_number = Mock(return_value=5)
+        mixin.get_page_count = Mock(return_value=10)
         mixin.get_context_object_name = Mock(return_value='foo_bar')
         mixin.get_paginated_object_list = Mock()
 
         self.assertEqual({
             'foo': 'bar',
             'is_paginated': True,
-            'items_per_page': 1,
+            'current_page_number': 5,
+            'total_page_count': 10,
             'foo_bar': mixin.get_paginated_object_list.return_value,
         }, mixin.get_context_data(foo='bar'))
 
@@ -228,13 +231,16 @@ class MultipleObjectMixinTestCase(unittest.TestCase):
         Test :py:meth:`.MultipleObjectMixin.get_context_data` unpaginated.
         """
         mixin = MultipleObjectMixin()
+        mixin.get_page_number = Mock(return_value=1)
+        mixin.get_page_count = Mock(return_value=None)
         mixin.get_context_object_name = Mock(return_value='foo_bar')
         mixin.get_paginated_object_list = Mock()
 
         self.assertEqual({
             'foo': 'bar',
             'is_paginated': False,
-            'items_per_page': 0,
+            'current_page_number': 1,
+            'total_page_count': None,
             'foo_bar': mixin.get_paginated_object_list.return_value,
         }, mixin.get_context_data(foo='bar'))
 
